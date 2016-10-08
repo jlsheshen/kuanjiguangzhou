@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="186dp"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/btn_selector_other_book" >
+
+        <ImageView
+            android:id="@+id/img_lock_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/img_other_lock" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_title_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="100dp"
+            android:ems="1"
+            android:text="考试题库"
+            android:textColor="@color/black"
+            android:textSize="@dimen/txt_size_half_medium" />
+
+        <ImageView
+            android:id="@+id/img_unfinished_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="130dp"
+            android:background="@drawable/img_other_unfinish"
+            android:visibility="gone" >
+        </ImageView>
+
+        <RelativeLayout
+            android:id="@+id/rl_finish_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/img_other_finish"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/tv_score_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="100dp"
+                android:ems="1"
+                android:text="85"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_size_half_medium" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

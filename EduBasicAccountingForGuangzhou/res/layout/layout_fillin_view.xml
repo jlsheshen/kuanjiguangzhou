@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_que_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:paddingRight="30dp"
+            android:paddingTop="6dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt_size_half_medium"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="810dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dip"
+            android:layout_toRightOf="@+id/btn_que_card" >
+
+            <!-- <TextView -->
+            <!-- android:id="@+id/tv_title" -->
+            <!-- android:layout_width="match_parent" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_alignParentLeft="true" -->
+            <!-- android:layout_centerVertical="true" -->
+            <!-- android:maxHeight="85dp" /> -->
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_error_count"
+                android:drawablePadding="15dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="综合题"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_size_small"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_accomplish"
+            android:layout_width="115dp"
+            android:layout_height="56dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text="完成"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt_size_half_medium"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_seal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_selector_stamp"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/btn_original"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/btn_seal"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:layout_toLeftOf="@id/btn_seal"
+            android:background="@null"
+            android:src="@drawable/btn_selector_info"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/ly_switch"
+            android:layout_width="220dp"
+            android:layout_height="53dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <Button
+                android:id="@+id/btn_show_user"
+                android:layout_width="105dp"
+                android:layout_height="52dp"
+                android:background="@drawable/btn_selector_switch"
+                android:text="答题结果"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_show_right"
+                android:layout_width="105dp"
+                android:layout_height="52dp"
+                android:background="@drawable/btn_selector_switch"
+                android:text="正确答案"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_title"
+        android:background="@color/trans_black"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/fl_holder"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:paddingTop="15dip" >
+
+            <ScrollView
+                android:id="@+id/sc_holder"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scrollbars="vertical" >
+
+                <FrameLayout
+                    android:id="@+id/fg_fuck"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:id="@+id/ll_quesbar"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:gravity="center_vertical"
+                            android:visibility="gone" >
+
+                            <TextView
+                                android:id="@+id/tv_ques_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:paddingLeft="23dp"
+                                android:textColor="@color/white"
+                                android:textSize="20sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ly_cs_holder"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:orientation="horizontal" >
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+            </ScrollView>
+        </LinearLayout>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_card"
+        android:layout_width="140dp"
+        android:layout_height="match_parent"
+        android:visibility="gone" >
+
+        <Button
+            android:id="@+id/btn_select_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ListView
+            android:id="@+id/lv_subject"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/btn_select_back"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@null" >
+        </ListView>
+    </RelativeLayout>
+
+    <AbsoluteLayout
+        android:id="@+id/input_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/rl_audit_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88000000"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/tv_sign_title"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text="盖章"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt_size_medium" />
+
+        <TextView
+            android:id="@+id/tv_sign_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_sign_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="90dp"
+            android:text="请在合适的位置点击盖章!"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt_size_half_medium" />
+
+        <RelativeLayout
+            android:layout_width="190dp"
+            android:layout_height="229dp"
+            android:layout_below="@+id/tv_sign_hint"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp" >
+
+            <com.edu.basicaccountingforguangzhou.view.GifView
+                android:id="@+id/gif_sign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- <include -->
+    <!-- android:id="@+id/layout_result" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- layout="@layout/layout_bill_result" -->
+    <!-- android:clickable="true" -->
+    <!-- android:visibility="gone" /> -->
+
+</RelativeLayout>

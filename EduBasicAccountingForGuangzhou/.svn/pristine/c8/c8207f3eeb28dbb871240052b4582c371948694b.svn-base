@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">基础会计考试题库</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="welcome_first">根据《小企业会计准则》、《会计基础工作规范》和全面实施营改增税法开发。</string>
+    <string name="welcome_second">本题库与中职学校会计专业的核心课程“会计基础”配套使用，实现知识与技能的智能化学习和信息化评价。</string>
+
+    <string-array name="question_practise">
+        <item></item>
+        <item>单选</item>
+        <item>多选</item>
+        <item>判断</item>
+        <item>实训题</item>
+    </string-array>
+
+</resources>

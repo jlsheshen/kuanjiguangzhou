@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="280dp"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/btn_selector_first_book" >
+
+        <com.edu.basicaccountingforguangzhou.util.RotateTextView
+            android:id="@+id/tv_title_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="45dp"
+            android:ems="1"
+            android:rotation="340"
+            android:text="基础会计试卷一"
+            android:textColor="@color/black"
+            android:textSize="@dimen/txt_size_half_medium" >
+        </com.edu.basicaccountingforguangzhou.util.RotateTextView>
+
+        <ImageView
+            android:id="@+id/img_unfinished_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="120dp"
+            android:background="@drawable/img_first_unfinish"
+            android:visibility="gone" >
+        </ImageView>
+
+        <RelativeLayout
+            android:id="@+id/rl_finish_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="130dp"
+            android:background="@drawable/img_first_finish"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/tv_score_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="95dp"
+                android:ems="1"
+                android:text="85"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_size_half_medium" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

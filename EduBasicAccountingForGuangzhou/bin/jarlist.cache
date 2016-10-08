@@ -1,0 +1,21 @@
+# cache for current jar dependency. DO NOT EDIT.
+# format is <lastModified> <length> <SHA-1> <path>
+# Encoding is UTF-8
+1470383329804 106424 386a4339ffe52d5d63e80f9bed8d2b1d1a418249 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\CLiberary\libs\android-async-http-1.4.9.jar
+1471571847553 106424 386a4339ffe52d5d63e80f9bed8d2b1d1a418249 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\EduLibrary\libs\android-async-http-1.4.9.jar
+1471571847323 24496 23a16ce3bec7f911b822dd5ac8c3e27dda53877d F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\EduLibrary\libs\wifihot.jar
+1428564731992 24496 23a16ce3bec7f911b822dd5ac8c3e27dda53877d F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\CLiberary\libs\wifihot.jar
+1471571847143 29257 2b8019b6249bb05d81d3a3094e468753e2b21311 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\EduLibrary\libs\slf4j-api-1.7.7.jar
+1425013249987 29257 2b8019b6249bb05d81d3a3094e468753e2b21311 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\CLiberary\libs\slf4j-api-1.7.7.jar
+1471571847404 267487 b9b8c9b651ac0500a2eb7466104c87a922531366 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\EduLibrary\libs\droidparts.jar
+1425013250207 267487 b9b8c9b651ac0500a2eb7466104c87a922531366 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\CLiberary\libs\droidparts.jar
+1470383329962 1063839 526a9f794eab830eae4f23a62c572878b3f491ab F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\CLiberary\libs\httpclient-4.3.6.jar
+1471571847800 1063839 526a9f794eab830eae4f23a62c572878b3f491ab F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\EduLibrary\libs\httpclient-4.3.6.jar
+1425013250092 363937 c173f8e5ce00eb2185078e33874bda9bf96a48a9 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\CLiberary\libs\fastjson-1.1.31.jar
+1471571847277 363937 c173f8e5ce00eb2185078e33874bda9bf96a48a9 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\EduLibrary\libs\fastjson-1.1.31.jar
+1471571847008 156948 224c93f1824fa17b96db7250c2e5e2703d45e052 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\EduLibrary\libs\ksoap2-android-assembly-3.0.0-jar-with-dependencies.jar
+1425013249746 156948 224c93f1824fa17b96db7250c2e5e2703d45e052 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\CLiberary\libs\ksoap2-android-assembly-3.0.0-jar-with-dependencies.jar
+1425013249975 484258 bd6479f5dd592790607e0504e66e0f31c2b4d308 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\CLiberary\libs\android-support-v4.jar
+1471571847652 484258 bd6479f5dd592790607e0504e66e0f31c2b4d308 F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\EduLibrary\libs\android-support-v4.jar
+1425013249901 632771 255f546277515f2191105e89f4d768e3ca02db9c F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\CLiberary\libs\mina-core-2.0.9.jar
+1471571847531 632771 255f546277515f2191105e89f4d768e3ca02db9c F:\TDDOWNLOAD\adt-bundle-windows-x86\workspace\EduLibrary\libs\mina-core-2.0.9.jar

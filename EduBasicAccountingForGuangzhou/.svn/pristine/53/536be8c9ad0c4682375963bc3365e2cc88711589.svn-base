@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="700dp"
+    android:layout_height="430dp"
+    android:background="@color/white" >
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_select_all"
+        android:layout_alignTop="@+id/btn_select_all"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:text="选择印章"
+        android:textColor="#2699c8"
+        android:textSize="@dimen/txt_size_medium" />
+
+    <View
+        android:id="@+id/iv_split"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/elv_content"
+        android:layout_alignRight="@+id/elv_content"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="12dip"
+        android:background="@drawable/iv_split_line" />
+
+    <GridView
+        android:id="@+id/gv_sign"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_cancel"
+        android:layout_below="@+id/iv_split"
+        android:layout_marginTop="12dip"
+        android:cacheColorHint="@android:color/transparent"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3" />
+
+    <View
+        android:id="@+id/iv_split2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/elv_content"
+        android:layout_alignRight="@+id/elv_content"
+        android:layout_below="@+id/gv_sign"
+        android:layout_marginTop="4dip"
+        android:background="#ff777777" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="550dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dip"
+        android:layout_marginTop="14dip"
+        android:text="取消"
+        android:textSize="@dimen/txt_size_half_medium" />
+
+</RelativeLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="trans_parent">#00000000</color>
+    <color name="black">#000000</color>
+    <color name="trans_black">#88000000</color>
+    <color name="trans_white">#66ffffff</color>
+    <color name="red">#FF0000</color>
+    <color name="white">#ffffff</color>
+    <color name="green">#32B400</color>
+    <color name="orange">#F87F26</color>
+    <color name="poke_money">#26C7CD</color>
+    <color name="blue_low">#1CDAD2</color>
+    <color name="gray">#7D7D7D</color>
+    <color name="trans_gray">#557D7D7D</color>
+    <color name="dark_gray">#4A4A4A</color>
+    <color name="blue">#26C7CD</color>
+    <color name="blue_sliding_menu_bg">#99bbc1</color>
+    <color name="text_content">#777575</color>
+    <color name="chapter_title">#23a9e7</color>
+    <color name="group_item_normal">#23a9e7</color>
+    <color name="group_item_pressed">#117eb1</color>
+    <color name="item_card_textcolor">#4faeff</color>
+    <color name="chapter_set">#37367D</color>
+    <color name="time_color">#6D6D6D</color>
+    <color name="wathet_blue">#6766cc</color>
+    <color name="yellow">#FFF68F</color>
+    <color name="modena">#6E6E6E</color>
+     <color name="right">#00FFB3</color>
+    <color name="error">#E54747</color>
+    <color name="tv_left_p">#3F3E3E</color>
+
+</resources>

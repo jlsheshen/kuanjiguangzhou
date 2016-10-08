@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="600dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_show_card" >
+
+    <RelativeLayout
+        android:id="@+id/rl_hide"
+        android:layout_width="600dp"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/btn_redo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_selector_redo"
+            android:text="全部重做"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/ss"
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_hide"
+        android:fillViewport="true"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical" >
+
+        <RelativeLayout
+            android:layout_width="600dp"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/llyout_card"
+                android:layout_width="600dp"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical" >
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
