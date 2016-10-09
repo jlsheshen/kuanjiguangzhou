@@ -12,7 +12,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.edu.basicaccountingforguangzhou.R;
 import com.edu.basicaccountingforguangzhou.billview.subject.ISubject;
+import com.edu.basicaccountingforguangzhou.billview.subject.SubjectType;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.element.info.SignInfo;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.listener.BillZoomListener;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.listener.SignViewListener;
@@ -22,6 +24,9 @@ import com.edu.basicaccountingforguangzhou.billview.subject.data.SignData;
 import com.edu.basicaccountingforguangzhou.billview.subject.data.TestBillData;
 import com.edu.basicaccountingforguangzhou.billview.subject.util.BitmapParseUtil;
 import com.edu.basicaccountingforguangzhou.billview.subject.view.SingleSelectView;
+import com.edu.basicaccountingforguangzhou.billview.subject.view.ZoomableBillView;
+import com.edu.basicaccountingforguangzhou.billview.testbill.util.SoundPoolUtil;
+import com.edu.library.util.ToastUtil;
 
 
 

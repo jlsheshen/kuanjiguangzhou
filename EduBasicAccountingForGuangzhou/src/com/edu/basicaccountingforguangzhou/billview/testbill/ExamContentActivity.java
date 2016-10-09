@@ -26,6 +26,7 @@ import com.edu.basicaccountingforguangzhou.billview.testbill.data.SubjectTestDat
 import com.edu.basicaccountingforguangzhou.billview.testbill.dialog.PictureBrowseDialog;
 import com.edu.basicaccountingforguangzhou.billview.testbill.dialog.SignChooseDialog;
 import com.edu.basicaccountingforguangzhou.billview.testbill.util.SoundPoolUtil;
+import com.edu.basicaccountingforguangzhou.data.BaseData;
 import com.edu.library.util.DBCopyUtil;
 
 /**
@@ -92,6 +93,7 @@ public class ExamContentActivity extends FragmentActivity implements OnItemClick
 		SoundPoolUtil.getInstance().init(this);
 
 		List<SignData> signs = (List<SignData>) SignDataDao.getInstance(this, Constant.DATABASE_NAME).getAllDatas();
+		
 		signDialog = new SignChooseDialog(this, signs, this);
 
 		picBrowseDialog = new PictureBrowseDialog(this);

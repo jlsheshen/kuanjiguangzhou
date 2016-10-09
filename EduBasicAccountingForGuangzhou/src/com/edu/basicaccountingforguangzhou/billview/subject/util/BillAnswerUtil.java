@@ -4,11 +4,11 @@ import java.util.List;
 
 import android.util.Log;
 
+import com.edu.basicaccountingforguangzhou.billview.subject.SubjectConstant;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.element.info.BlankInfo;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.view.BlankEditText;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.view.SignView;
 import com.edu.basicaccountingforguangzhou.billview.subject.data.TestBillData;
-import com.edu.subject.SubjectConstant;
 
 /**
  * 单据题答案解析工具类

@@ -18,6 +18,9 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
+import com.edu.basicaccountingforguangzhou.billview.subject.ISubject;
+import com.edu.basicaccountingforguangzhou.billview.subject.bill.DragState;
+import com.edu.basicaccountingforguangzhou.billview.subject.bill.FocusHandler;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.element.ElementLayoutParams;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.element.ElementType;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.element.info.BaseElementInfo;

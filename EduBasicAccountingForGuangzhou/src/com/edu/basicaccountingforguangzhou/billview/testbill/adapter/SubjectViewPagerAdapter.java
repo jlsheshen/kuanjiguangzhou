@@ -12,11 +12,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import com.edu.basicaccountingforguangzhou.billview.subject.SubjectState;
 import com.edu.basicaccountingforguangzhou.billview.subject.common.SubjectViewPagerFragment;
 import com.edu.basicaccountingforguangzhou.billview.subject.data.BaseTestData;
 import com.edu.basicaccountingforguangzhou.billview.subject.data.SignData;
 import com.edu.basicaccountingforguangzhou.billview.testbill.data.SubjectTestDataDao;
-import com.edu.subject.SubjectState;
 
 /**
  * 题目练习界面用的adapter

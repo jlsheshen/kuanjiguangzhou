@@ -9,8 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.edu.basicaccountingforguangzhou.R;
 import com.edu.basicaccountingforguangzhou.billview.subject.util.BitmapParseUtil;
-import com.edu.basicaccountingforguangzhou.billview.testbill.R;
+
 
 /**
  * 单据题目图片资料查看对话框

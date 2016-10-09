@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
 
+import com.edu.basicaccountingforguangzhou.billview.subject.SubjectType;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.template.BillTemplate;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.template.BillTemplateFactory;
 import com.edu.basicaccountingforguangzhou.billview.subject.dao.SubjectBasicDataDao;
@@ -23,8 +24,7 @@ import com.edu.basicaccountingforguangzhou.billview.testbill.Constant;
 import com.edu.library.data.BaseDataDao;
 import com.edu.library.data.DBHelper;
 import com.edu.library.util.ToastUtil;
-import com.edu.subject.SubjectType;
-import com.edu.subject.TestMode;
+
 
 /**
  * 测试数据数据库操作dao层

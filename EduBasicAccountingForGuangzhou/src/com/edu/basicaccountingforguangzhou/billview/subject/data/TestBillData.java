@@ -3,10 +3,10 @@ package com.edu.basicaccountingforguangzhou.billview.subject.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.edu.basicaccountingforguangzhou.billview.subject.SubjectConstant;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.element.info.BaseElementInfo;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.element.info.BlankInfo;
 import com.edu.basicaccountingforguangzhou.billview.subject.bill.template.BillTemplate;
-import com.edu.subject.SubjectConstant;
 
 /**
  * 单据测试数据

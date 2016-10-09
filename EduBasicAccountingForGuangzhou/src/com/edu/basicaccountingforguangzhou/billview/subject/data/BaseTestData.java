@@ -1,9 +1,7 @@
 package com.edu.basicaccountingforguangzhou.billview.subject.data;
 
 import com.edu.library.data.BaseData;
-import com.edu.subject.SubjectState;
-import com.edu.subject.SubjectType;
-import com.edu.subject.TestMode;
+
 
 /**
  * 题目测试数据基类

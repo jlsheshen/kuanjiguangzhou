@@ -11,8 +11,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 
+import com.edu.basicaccountingforguangzhou.R;
 import com.edu.basicaccountingforguangzhou.billview.subject.data.SignData;
-import com.edu.basicaccountingforguangzhou.billview.testbill.R;
 import com.edu.basicaccountingforguangzhou.billview.testbill.adapter.SignsAdapter;
 
 /**

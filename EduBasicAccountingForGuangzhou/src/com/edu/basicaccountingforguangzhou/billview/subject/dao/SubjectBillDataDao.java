@@ -6,9 +6,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.edu.basicaccountingforguangzhou.billview.subject.SubjectType;
 import com.edu.basicaccountingforguangzhou.billview.subject.data.SubjectBillData;
 import com.edu.library.data.BaseDataDao;
-import com.edu.subject.SubjectType;
 
 /**
  * 印章数据库操作dao层

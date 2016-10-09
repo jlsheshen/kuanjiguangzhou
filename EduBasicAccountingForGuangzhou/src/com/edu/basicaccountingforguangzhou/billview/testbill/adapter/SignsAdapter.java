@@ -11,9 +11,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.edu.basicaccountingforguangzhou.R;
 import com.edu.basicaccountingforguangzhou.billview.subject.data.SignData;
 import com.edu.basicaccountingforguangzhou.billview.subject.util.BitmapParseUtil;
-import com.edu.basicaccountingforguangzhou.billview.testbill.R;
 
 /**
  * 印章选择表格的adapter
@@ -63,9 +63,9 @@ public class SignsAdapter extends BaseAdapter {
 			view = convertView;
 		}
 
-		ImageView sign = (ImageView) view.findViewById(R.id.ivSign);
+		ImageView sign = (ImageView) view.findViewById(R.id.iv_sign);
 		sign.setImageBitmap(BitmapParseUtil.parse(mList.get(position).getPic(), mContext));
-		TextView signContent = (TextView) view.findViewById(R.id.tvName);
+		TextView signContent = (TextView) view.findViewById(R.id.tv_sign_content);
 		signContent.setText(mList.get(position).getName());
 		view.setTag(mList.get(position));
 

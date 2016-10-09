@@ -1,7 +1,6 @@
 package com.edu.basicaccountingforguangzhou.billview.subject.data;
 
 import com.edu.library.data.BaseData;
-import com.edu.subject.SubjectType;
 
 /**
  * 题目数据基类
