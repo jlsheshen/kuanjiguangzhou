@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F1F0"
+    android:gravity="center" >
+
+    <com.edu.subject.bill.view.ZoomableBillView
+        android:id="@+id/billView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    </com.edu.subject.bill.view.ZoomableBillView>
+
+    <Button
+        android:id="@+id/btnZoomOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/billView"
+        android:focusable="false"
+        android:onClick="onClick"
+        android:text="-" />
+
+    <Button
+        android:id="@+id/btnZoomIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/billView"
+        android:layout_alignParentRight="true"
+        android:focusable="false"
+        android:onClick="onClick"
+        android:text="+" />
+
+</RelativeLayout>
