@@ -1,5 +1,6 @@
 package com.edu.basicaccountingforguangzhou.data;
 
+
 /**
  * 一级科目表数据封装
  * 

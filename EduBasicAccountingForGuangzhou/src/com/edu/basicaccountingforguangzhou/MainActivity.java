@@ -156,8 +156,7 @@ public class MainActivity extends EduBaseActivity implements OnClickListener {
 		}
 		bundle.putInt("index", pos);
 		bundle.putInt("textId", textId);
-		bundle.putSerializable("datas", (Serializable) mDatas);
-		//startActivity(SubjectTestActivity.class, bundle);
+		//bundle.putSerializable("datas", (Serializable) mDatas);
 		startActivity(SubjectTestActivity.class, bundle);
 		this.finish();
 	}

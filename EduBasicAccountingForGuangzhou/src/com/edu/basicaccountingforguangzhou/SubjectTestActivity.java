@@ -4,17 +4,25 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.edu.basicaccountingforguangzhou.adapter.SubjectViewPagerAdapter;
+import com.edu.basicaccountingforguangzhou.data.BaseSubjectData;
 import com.edu.basicaccountingforguangzhou.data.EduSqliteDbOprater;
 import com.edu.basicaccountingforguangzhou.data.TestData;
 import com.edu.basicaccountingforguangzhou.data.TextInfoDataDao;
 import com.edu.basicaccountingforguangzhou.dialog.ConfirmReDoDialog;
 import com.edu.basicaccountingforguangzhou.dialog.ConfirmReDoDialog.OnRedoClickListener;
+import com.edu.basicaccountingforguangzhou.dialog.PictureBrowseDialog;
+import com.edu.basicaccountingforguangzhou.dialog.SignChooseDialog;
 import com.edu.basicaccountingforguangzhou.model.BillDataModel;
 import com.edu.basicaccountingforguangzhou.model.SubjectBillDataModel;
 import com.edu.basicaccountingforguangzhou.model.SubjectModel;
 import com.edu.basicaccountingforguangzhou.model.TestDataModel;
 import com.edu.basicaccountingforguangzhou.model.ViewModel;
+import com.edu.basicaccountingforguangzhou.subject.SubjectConstant;
+import com.edu.basicaccountingforguangzhou.subject.bill.listener.WhileIsBillListener;
+import com.edu.basicaccountingforguangzhou.subject.dao.SignDataDao;
+import com.edu.basicaccountingforguangzhou.subject.data.SignData;
 import com.edu.basicaccountingforguangzhou.view.AutoJumpNextListener;
+import com.edu.basicaccountingforguangzhou.view.BroadcastReciverViewPager;
 import com.edu.basicaccountingforguangzhou.view.CardViewForPractice;
 import com.edu.basicaccountingforguangzhou.view.CardViewForPractice.onClickListeners;
 import com.edu.basicaccountingforguangzhou.view.CardViewForPractice.onClickListenersForError;
@@ -34,11 +42,16 @@ import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Html;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -51,13 +64,14 @@ import android.widget.TextView;
  * 
  */
 public class SubjectTestActivity extends BaseFragmentActivity
-		implements SubjectViewListener, OnClickListener, IOnClickListener, onClickListeners, onClickListenersForError, onClickListenersForHide, AutoJumpNextListener {
+		implements SubjectViewListener, OnClickListener, IOnClickListener, onClickListeners, onClickListenersForError, onClickListenersForHide, 
+		AutoJumpNextListener,OnItemClickListener{
 	private static final String TAG = "SubjectTestActivity";
 
 	/**
 	 * 题目viewpager界面
 	 */
-	private ViewPager vpSubject;
+	private BroadcastReciverViewPager vpSubject;
 	/**
 	 * 题目信息对应的adapter
 	 */
@@ -69,6 +83,15 @@ public class SubjectTestActivity extends BaseFragmentActivity
 	private int type = 0;
 	// title布局
 	private RelativeLayout titleLayout;
+	
+	// 图片浏览对话框
+
+	private PictureBrowseDialog picBrowseDialog;
+
+
+	private int mCurrentIndex;
+	// 印章选择对话框
+	private SignChooseDialog signDialog;
 
 	// 测试类别
 	private TextView tvTestType;
@@ -91,6 +114,7 @@ public class SubjectTestActivity extends BaseFragmentActivity
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(android.os.Message msg) {
+
 			initView();
 			initData();
 		};
@@ -135,6 +159,9 @@ public class SubjectTestActivity extends BaseFragmentActivity
 			} else {
 				tvTestType.setText(mDatas.get(item).getTitle());
 			}
+			
+			mCurrentIndex = item;
+
 		}
 
 		@Override
@@ -152,6 +179,7 @@ public class SubjectTestActivity extends BaseFragmentActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_subject_test);
 
+
 		mHandler.sendEmptyMessageDelayed(0, 200);
 
 	}
@@ -161,10 +189,17 @@ public class SubjectTestActivity extends BaseFragmentActivity
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			type = bundle.getInt("testType");
-			mDatas = (List<TestData>) bundle.getSerializable("datas");
+		//	mDatas = (List<TestData>) bundle.getSerializable("datas");
 			currentIndex = bundle.getInt("index");
 			textId = bundle.getInt("textId");
+			mDatas = TestDataModel.getInstance(mContext).getDatas(textId, 2);
+			
+			List<SignData> signs = (List<SignData>) SignDataDao.getInstance(this, Constant.DATABASE_NAME).getAllDatas();
+			signDialog = new SignChooseDialog(this, signs, this);
+			
+
 		}
+		//type ==1 时为答题模式
 		if (type == 1) {
 			findViewById(R.id.btn_submit).setVisibility(View.VISIBLE);
 		} else {
@@ -174,6 +209,7 @@ public class SubjectTestActivity extends BaseFragmentActivity
 		vpSubject.setAdapter(adapter);
 		vpSubject.setOnPageChangeListener(mPageChangeListener);
 		vpSubject.setCurrentItem(currentIndex);
+	
 		Constant.TITLE_HEIGHT = titleLayout.getHeight();
 		// tvTestType.setText(mDatas.get(currentIndex).getTitle());
 		if (mDatas.get(currentIndex).getSubjectType() == 4) {
@@ -182,7 +218,7 @@ public class SubjectTestActivity extends BaseFragmentActivity
 		} else {
 			tvTestType.setText(mDatas.get(currentIndex).getTitle());
 		}
-
+		picBrowseDialog = new PictureBrowseDialog(this);
 	}
 
 	/**
@@ -213,7 +249,8 @@ public class SubjectTestActivity extends BaseFragmentActivity
 	 */
 	public void initView() {
 		titleLayout = (RelativeLayout) this.findViewById(R.id.rl_title);
-		vpSubject = (ViewPager) findViewById(R.id.vp_content);
+		vpSubject =  (BroadcastReciverViewPager) findViewById(R.id.vp_content);
+
 		tvTestType = (TextView) findViewById(R.id.tv_test_type);
 		btnCard = (Button) findViewById(R.id.btn_card);
 		rlCard = (RelativeLayout) this.findViewById(R.id.rl_card);
@@ -227,6 +264,7 @@ public class SubjectTestActivity extends BaseFragmentActivity
 		btnCard.setOnClickListener(this);
 		btnStamp.setOnClickListener(this);
 		btnInfo.setOnClickListener(this);
+		
 
 	}
 
@@ -320,17 +358,49 @@ public class SubjectTestActivity extends BaseFragmentActivity
 			break;
 
 		case R.id.btn_stamp:
-			adapter.setVisbilte(currentIndex);
+//			adapter.setVisbilte(currentIndex);
+			sign();
+
 			break;
 
 		case R.id.btn_info:
-			adapter.setPictureVisbilte(currentIndex);
+		//	adapter.setPictureVisbilte(currentIndex);
+			browsePics();
+
+			
 			break;
 
 		default:
 			break;
 		}
 	}
+	
+	/**
+	 * 显示印章选择对话框
+	 */
+	private void sign() {
+		if (!signDialog.isShowing()) {
+			signDialog.show();
+		}
+	}
+	
+	/**
+	 * 显示浏览图片对话框
+	 */
+	private void browsePics() {
+		if (!picBrowseDialog.isShowing()) {
+			TestData testData = adapter.getData(mCurrentIndex);
+			BaseSubjectData subjectData = testData.getBillData().getSubjectData();
+			String pic = subjectData.getPic();
+			if (pic == null)
+				return;
+			String[] pics = pic.split(SubjectConstant.SEPARATOR_ITEM);
+			picBrowseDialog.setPics(pics);
+			picBrowseDialog.show();
+		}
+	}
+
+	
 
 	@Override
 	protected void onPause() {
@@ -443,7 +513,7 @@ public class SubjectTestActivity extends BaseFragmentActivity
 				}
 			} else {
 				SubjectBillDataModel.getInstance(mContext).updateContent(Integer.valueOf(mDatas.get(i).getSubjectId()), 0, 0);
-				ViewModel.getInstance(mContext).updateContent(Integer.valueOf(mDatas.get(i).getSubjectId()), "", 0);
+			//	ViewModel.getInstance(mContext).updateContent(Integer.valueOf(mDatas.get(i).getSubjectId()), "", 0);
 				EduSqliteDbOprater eso = new EduSqliteDbOprater(mContext);
 				eso.deleteUserSign(Integer.parseInt(mDatas.get(i).getSubjectId()));
 			}
@@ -566,6 +636,13 @@ public class SubjectTestActivity extends BaseFragmentActivity
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.setCancelable(false);
 		dialog.show();
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		signDialog.dismiss();
+		adapter.sign(mCurrentIndex, (SignData) view.getTag());
+		
 	}
 
 }

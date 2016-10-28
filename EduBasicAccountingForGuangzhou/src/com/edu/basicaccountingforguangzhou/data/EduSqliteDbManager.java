@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.edu.basicaccountingforguangzhou.Constant;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+
+import com.edu.basicaccountingforguangzhou.Constant;
 
 /**
  * 数据库管理类，具备增删改查操作。 增删改 --> 操作一个sql语句，并且有返回值。 查询 --> 1. 返回一个游标类型 2.
@@ -407,4 +407,10 @@ public class EduSqliteDbManager<T> extends BaseDataDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+//	@Override
+//	public void setTableName() {
+//		// TODO Auto-generated method stub
+//		
+//	}
 }

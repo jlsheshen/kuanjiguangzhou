@@ -4,35 +4,34 @@ import java.util.List;
 
 import com.edu.basicaccountingforguangzhou.R;
 import com.edu.basicaccountingforguangzhou.adapter.SignsAdapter;
-import com.edu.basicaccountingforguangzhou.info.SignInfo;
+import com.edu.basicaccountingforguangzhou.subject.data.SignData;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 
+
+
 /**
- * 测试范围选择对话框对话框
+ * 印章选择对话框
  * 
  * @author lucher
  * 
  */
 public class SignChooseDialog extends Dialog implements android.view.View.OnClickListener {
 
-	// 全选，确定，取消按钮
+	// 取消按钮
 	private Button btnCancel;
-
-	// 按钮点击监听
-	private OnButtonClickListener mListener;
-
 	private Context mContext;
-
-	private GridView gvSing;
-
-	private List<SignInfo> datas;
+	// 印章表格
+	private GridView gvSigns;
+	// 印章数据
+	private List<SignData> datas;
 
 	private OnItemClickListener itemClickListener;
 
@@ -40,15 +39,14 @@ public class SignChooseDialog extends Dialog implements android.view.View.OnClic
 	 * 构造方法
 	 * 
 	 * @param context
-	 * @param type
-	 * @param level
-	 *            关卡
 	 */
-	public SignChooseDialog(Context context, List<SignInfo> datas, OnItemClickListener itemClickListener) {
+	public SignChooseDialog(Context context, List<SignData> datas, OnItemClickListener itemClickListener) {
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.dialog_sign_select);
+		
 		mContext = context;
 		this.datas = datas;
 		this.itemClickListener = itemClickListener;
@@ -60,20 +58,11 @@ public class SignChooseDialog extends Dialog implements android.view.View.OnClic
 	 */
 	private void init() {
 		btnCancel = (Button) this.findViewById(R.id.btn_cancel);
-		gvSing = (GridView) this.findViewById(R.id.gv_sign);
+		gvSigns = (GridView) this.findViewById(R.id.gv_sign);
 		btnCancel.setOnClickListener(this);
 		SignsAdapter signsAdapter = new SignsAdapter(mContext, datas);
-		gvSing.setAdapter(signsAdapter);
-		gvSing.setOnItemClickListener(itemClickListener);
-	}
-
-	/**
-	 * 设置按钮点击监听
-	 * 
-	 * @param listener
-	 */
-	public void setOnButtonClickListener(OnButtonClickListener listener) {
-		this.mListener = listener;
+		gvSigns.setAdapter(signsAdapter);
+		gvSigns.setOnItemClickListener(itemClickListener);
 	}
 
 	@Override

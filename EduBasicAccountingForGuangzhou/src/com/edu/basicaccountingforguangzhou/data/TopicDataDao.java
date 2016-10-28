@@ -7,14 +7,8 @@ package com.edu.basicaccountingforguangzhou.data;
  * 
  */
 
-import java.util.List;
-
-import com.edu.basicaccountingforguangzhou.Constant;
-
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.util.Log;
 
 public class TopicDataDao extends BaseDataDao {
 
@@ -82,4 +76,6 @@ public class TopicDataDao extends BaseDataDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }

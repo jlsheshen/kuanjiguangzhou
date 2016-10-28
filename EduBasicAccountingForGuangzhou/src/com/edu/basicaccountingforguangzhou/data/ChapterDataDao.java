@@ -3,12 +3,12 @@ package com.edu.basicaccountingforguangzhou.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.edu.basicaccountingforguangzhou.Constant;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
+
+import com.edu.basicaccountingforguangzhou.Constant;
 
 /**
  * 产品类别数据库操作类
@@ -136,6 +136,7 @@ public class ChapterDataDao extends BaseDataDao {
 	 */
 	@Override
 	public ChapterData parseCursor(Cursor curs) {
+
 		ChapterData data = new ChapterData();
 		int idIndex = curs.getColumnIndex(ID);
 		int parentIdIndex = curs.getColumnIndex(PARENT_ID);
@@ -152,4 +153,6 @@ public class ChapterDataDao extends BaseDataDao {
 
 		return data;
 	}
+
+
 }

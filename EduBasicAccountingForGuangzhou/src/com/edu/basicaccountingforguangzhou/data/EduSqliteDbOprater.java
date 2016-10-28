@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
+
 import com.edu.basicaccountingforguangzhou.info.QuestionInfo;
 import com.edu.basicaccountingforguangzhou.info.RandomBlankEntity;
 import com.edu.basicaccountingforguangzhou.info.SignInfo;
@@ -14,11 +19,6 @@ import com.edu.basicaccountingforguangzhou.info.UserSignInfo;
 import com.edu.basicaccountingforguangzhou.util.Utils;
 import com.edu.ime.ViewInfo;
 import com.edu.library.util.RandomUtil;
-
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.util.Log;
 
 public class EduSqliteDbOprater {
 

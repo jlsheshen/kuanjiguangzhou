@@ -1,5 +1,6 @@
 package com.edu.basicaccountingforguangzhou.data;
 
+
 /**
  * 典型类题数据封装
  * 

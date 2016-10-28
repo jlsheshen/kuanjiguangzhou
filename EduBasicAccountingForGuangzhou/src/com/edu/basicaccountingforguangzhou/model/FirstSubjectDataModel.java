@@ -54,6 +54,7 @@ public class FirstSubjectDataModel {
 	 */
 	public FirstSubjectData getDataById(int id) {
 		return (FirstSubjectData) FirstSubjectDataDao.getInstance(mContext).getDataById(id);
+
 	}
 
 //	/**

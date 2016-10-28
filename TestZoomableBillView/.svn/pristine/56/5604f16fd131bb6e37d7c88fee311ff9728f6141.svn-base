@@ -1,0 +1,11 @@
+BEGIN TRANSACTION;
+insert into tb_sign ("ID", "FLAG", "NAME", "PIC", "REMARK") values ('1', '-1', '长沙市含光公司财务专用章', 'assets://sign/sign.png', NULL);
+insert into tb_sign ("ID", "FLAG", "NAME", "PIC", "REMARK") values ('2', '-1', '张玉利印', 'assets://sign/sign2.png', NULL);
+insert into tb_sign ("ID", "FLAG", "NAME", "PIC", "REMARK") values ('3', '-1', '转讫', 'assets://sign/sign3.png', NULL);
+insert into tb_sign ("ID", "FLAG", "NAME", "PIC", "REMARK") values ('4', '-1', '银行收讫', 'assets://sign/sign4.png', NULL);
+insert into tb_sign ("ID", "FLAG", "NAME", "PIC", "REMARK") values ('5', '-1', '转账', 'assets://sign/sign5.png', NULL);
+insert into tb_sign ("ID", "FLAG", "NAME", "PIC", "REMARK") values ('6', '-1', '广州威龙发票专用章', 'assets://sign/sign6.png', NULL);
+insert into tb_sign ("ID", "FLAG", "NAME", "PIC", "REMARK") values ('7', '-1', '广州威龙财务专用章', 'assets://sign/sign7.png', NULL);
+insert into tb_sign ("ID", "FLAG", "NAME", "PIC", "REMARK") values ('8', '-1', '邓威龙印', 'assets://sign/sign8.png', NULL);
+insert into tb_sign ("ID", "FLAG", "NAME", "PIC", "REMARK") values ('9', '-1', '广州威龙收费专用章', 'assets://sign/sign9.png', NULL);
+COMMIT;

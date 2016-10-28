@@ -72,7 +72,7 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/btn_selector_last"
                 android:onClick="onClick"
-                android:visibility="gone" />
+               />
 
             <Button
                 android:id="@+id/btn_next"
@@ -81,7 +81,7 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/btn_selector_next"
                 android:onClick="onClick"
-                android:visibility="gone" />
+         />
 
             <Button
                 android:id="@+id/btn_card"
@@ -116,11 +116,15 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/dash_line" >
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp_content"
+        <com.edu.basicaccountingforguangzhou.view.BroadcastReciverViewPager
+             android:id="@+id/vp_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        </android.support.v4.view.ViewPager>
+            android:layout_height="match_parent" 
+           />
+
+
+
+ 
     </RelativeLayout>
 
     <RelativeLayout

@@ -1,5 +1,6 @@
 package com.edu.basicaccountingforguangzhou.data;
 
+
 public class TextInfoData extends BaseData {
 
 	private String name;// 试题名称

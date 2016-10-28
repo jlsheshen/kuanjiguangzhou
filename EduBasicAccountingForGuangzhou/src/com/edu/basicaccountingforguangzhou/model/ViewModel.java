@@ -48,23 +48,23 @@ public class ViewModel {
 	 */
 	public void insertBillView(int question_id, double x_axis, double y_axis, double width, double height, String answer, String initial_value, String user_answer, int radio_group, int input_type,
 			int editable, int type_index, int randomFlah, int isRighted) {
-		ContentValues values = new ContentValues();
-		values.put(ViewDataDao.QUESTION_ID, question_id);
-		values.put(ViewDataDao.X_AXIS, x_axis);
-		values.put(ViewDataDao.Y_AXIS, y_axis);
-		values.put(ViewDataDao.WIDTH, width);
-		values.put(ViewDataDao.HEIGHT, height);
-		values.put(ViewDataDao.ANSWER, answer);
-		values.put(ViewDataDao.INITIAL_VALUE, initial_value);
-		values.put(ViewDataDao.USER_ANSWER, user_answer);
-		values.put(ViewDataDao.RADIO_GROUP, radio_group);
-		values.put(ViewDataDao.INPUT_TYPE, input_type);
-		values.put(ViewDataDao.EDITABLE, editable);
-		values.put(ViewDataDao.TYPE_INDEX, type_index);
-		values.put(ViewDataDao.RANDOMFLAH, randomFlah);
-		values.put(ViewDataDao.ISRIGHTED, isRighted);
-
-		ViewDataDao.getInstance(mContext).insertData(values);
+//		ContentValues values = new ContentValues();
+//		values.put(ViewDataDao.QUESTION_ID, question_id);
+//		values.put(ViewDataDao.X_AXIS, x_axis);
+//		values.put(ViewDataDao.Y_AXIS, y_axis);
+//		values.put(ViewDataDao.WIDTH, width);
+//		values.put(ViewDataDao.HEIGHT, height);
+//		values.put(ViewDataDao.ANSWER, answer);
+//		values.put(ViewDataDao.INITIAL_VALUE, initial_value);
+//		values.put(ViewDataDao.USER_ANSWER, user_answer);
+//		values.put(ViewDataDao.RADIO_GROUP, radio_group);
+//		values.put(ViewDataDao.INPUT_TYPE, input_type);
+//		values.put(ViewDataDao.EDITABLE, editable);
+//		values.put(ViewDataDao.TYPE_INDEX, type_index);
+//		values.put(ViewDataDao.RANDOMFLAH, randomFlah);
+//		values.put(ViewDataDao.ISRIGHTED, isRighted);
+//
+//		ViewDataDao.getInstance(mContext).insertData(values);
 
 	}
 
@@ -74,14 +74,14 @@ public class ViewModel {
 	 * @param id
 	 * @return
 	 */
-	public List<ViewData> getViewIDatasById(int id) {
-		return ViewDataDao.getInstance(mContext).getViewIDatasById(id);
-
-	}
-
-	public void getCopyViewData(int oldId, int newId) {
-		ViewDataDao.getInstance(mContext).getCopyViewData(oldId, newId);
-	}
+//	public List<ViewData> getViewIDatasById(int id) {
+//		return ViewDataDao.getInstance(mContext).getBillTemplate(id);
+//
+//	}
+//
+//	public void getCopyViewData(int oldId, int newId) {
+//		ViewDataDao.getInstance(mContext).getCopyViewData(oldId, newId);
+//	}
 
 	/**
 	 * 清除数据
@@ -90,11 +90,11 @@ public class ViewModel {
 	 * @param uAnswer
 	 * @param Right
 	 */
-	public void updateContent(int questionId, String uAnswer, int Right) {
-		ContentValues values = new ContentValues();
-		values.put(ViewDataDao.USER_ANSWER, uAnswer);
-		values.put(ViewDataDao.ISRIGHTED, Right);
-		ViewDataDao.getInstance(mContext).upDateContent(questionId, uAnswer, Right);
-	}
+//	public void updateContent(int questionId, String uAnswer, int Right) {
+//		ContentValues values = new ContentValues();
+//		values.put(ViewDataDao.USER_ANSWER, uAnswer);
+//		values.put(ViewDataDao.ISRIGHTED, Right);
+//		ViewDataDao.getInstance(mContext).upDateContent(questionId, uAnswer, Right);
+//	}
 
 }

@@ -22,6 +22,7 @@ import com.edu.basicaccountingforguangzhou.info.SignInfo;
 import com.edu.basicaccountingforguangzhou.info.UserSignInfo;
 import com.edu.basicaccountingforguangzhou.model.SubjectBillDataModel;
 import com.edu.basicaccountingforguangzhou.model.TestDataModel;
+import com.edu.basicaccountingforguangzhou.testbill.data.SubjectTestDataDao;
 import com.edu.basicaccountingforguangzhou.util.PreferenceHelper;
 import com.edu.basicaccountingforguangzhou.util.Utils;
 import com.edu.ime.CustomerInputView;
@@ -71,7 +72,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 /**
- * 填制答题界面
+ * 单据答题界面
  * 
  * @author lucher
  * 
@@ -144,6 +145,7 @@ public class FillInContentView extends RelativeLayout implements OnClickListener
 	private TestData mTestData;
 	// 对应数据
 	private SubjectBillData mData;
+	//试卷状态
 
 	// 所得分数
 	private float mUscore;
@@ -180,7 +182,7 @@ public class FillInContentView extends RelativeLayout implements OnClickListener
 		// this.typeId = mData.getBillTypeId();
 		// this.billId = mData.getBillId();
 		this.titleIndex = mData.getIndexName();
-		this.showResult = mData.isCompleted();
+		this.showResult = false;
 		this.state = data.getState();
 		this.mTestMode = testMode;
 		inflater.inflate(R.layout.loading_layout, this);
@@ -999,16 +1001,16 @@ public class FillInContentView extends RelativeLayout implements OnClickListener
 
 			}
 		};
-		dialog = new SignChooseDialog(mContext, listSigns, listener);
-		dialog.setOnButtonClickListener(new OnButtonClickListener() {
-
-			public void onCancelClicked() {
-				dialog.dismiss();
-
-			}
-		});
-		dialog.show();
-		dialog.setCanceledOnTouchOutside(true);
+//		dialog = new SignChooseDialog(mContext, listSigns, listener);
+//		dialog.setOnButtonClickListener(new OnButtonClickListener() {
+//
+//			public void onCancelClicked() {
+//				dialog.dismiss();
+//
+//			}
+//		});
+//		dialog.show();
+//		dialog.setCanceledOnTouchOutside(true);
 
 		// if (tempDialog.isShowing()) {
 		// tempDialog.dismiss();
@@ -1216,7 +1218,7 @@ public class FillInContentView extends RelativeLayout implements OnClickListener
 	 */
 	public void done() {
 		listQuestionInfo.get(nowLoc).setIsCompleted((byte) 2);
-		mData.setCompleted(true);
+		//mData.setCompleted(true);
 		saveUserAnswer();
 
 		mUscore = getScore();
@@ -1898,7 +1900,7 @@ public class FillInContentView extends RelativeLayout implements OnClickListener
 		initView();
 		eso.clearUserAnswer(mData.getId());
 		listQuestionInfo.get(nowLoc).setIsCompleted((byte) 0);
-		mData.setCompleted(false);
+		//mData.setCompleted(false);
 		eso.updateUserAnswer(listQuestionInfo, nowLoc, mContext);
 		eso.deleteUserSigns(mData.getId());
 	}

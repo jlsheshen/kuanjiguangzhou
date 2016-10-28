@@ -119,6 +119,7 @@ public class SencondarySubjectDialog extends BaseDialog implements OnItemClickLi
 			datas = new ArrayList<SecondSubjectData>();
 			SecondSubjectData data = new SecondSubjectData();
 			data.setId(-1);
+
 			data.setName("空");
 			datas.add(data);
 		}

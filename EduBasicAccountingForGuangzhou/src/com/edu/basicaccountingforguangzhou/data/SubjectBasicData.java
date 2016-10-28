@@ -26,6 +26,10 @@ public class SubjectBasicData extends BaseSubjectData {
 	private boolean isRight;// 是否正确
 	private int serverId;
 	public String getUserAnswer() {
+		if (userAnswer==null) {
+			return "";
+			
+		}
 		return userAnswer.trim();
 	}
 

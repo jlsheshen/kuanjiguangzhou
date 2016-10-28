@@ -1,0 +1,12 @@
+BEGIN TRANSACTION;
+insert into tb_bill_template ("ID", "NAME", "BACKGROUND", "FLAG", "REMARK") values ('1', '出库单', 'assets://background/chanpinchukudan.png', '-1', NULL);
+insert into tb_bill_template ("ID", "NAME", "BACKGROUND", "FLAG", "REMARK") values ('2', '差旅费用报销单', 'assets://background/chailvfeibaoxiao.png', '-1', NULL);
+insert into tb_bill_template ("ID", "NAME", "BACKGROUND", "FLAG", "REMARK") values ('3', '现金支票', 'assets://background/xianjinzhipiao.png', '-1', NULL);
+insert into tb_bill_template ("ID", "NAME", "BACKGROUND", "FLAG", "REMARK") values ('4', '增值税专用发票', 'assets://background/zengzhishuizhuanyongfapiao.png', '-1', NULL);
+insert into tb_bill_template ("ID", "NAME", "BACKGROUND", "FLAG", "REMARK") values ('5', '支票背书', 'assets://background/zhipiaobeishu.png', '-1', NULL);
+insert into tb_bill_template ("ID", "NAME", "BACKGROUND", "FLAG", "REMARK") values ('6', '进账单', 'assets://background/jinzhangdan.png', '-1', NULL);
+insert into tb_bill_template ("ID", "NAME", "BACKGROUND", "FLAG", "REMARK") values ('7', 'CCB现金支票', 'assets://background/CCBxianjinzhipiao.png', '-1', NULL);
+insert into tb_bill_template ("ID", "NAME", "BACKGROUND", "FLAG", "REMARK") values ('8', '收款收据', 'assets://background/shoukuanshouju.png', '-1', NULL);
+insert into tb_bill_template ("ID", "NAME", "BACKGROUND", "FLAG", "REMARK") values ('9', '记账凭证', 'assets://background/jizhangpingzheng.png', '-1', NULL);
+insert into tb_bill_template ("ID", "NAME", "BACKGROUND", "FLAG", "REMARK") values ('10', '试算平衡表', 'assets://background/shisuanpinghengbiao.png', '-1', NULL);
+COMMIT;

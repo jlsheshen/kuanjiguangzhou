@@ -2,14 +2,14 @@ package com.edu.basicaccountingforguangzhou.data;
 
 import java.util.List;
 
-import com.edu.basicaccountingforguangzhou.Constant;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.edu.basicaccountingforguangzhou.Constant;
 
 /**
  * 数据库操作dao层基类
@@ -20,6 +20,19 @@ import android.util.Log;
 public abstract class BaseDataDao {
 
 	public static final String TAG = "BaseDataDao";
+
+
+
+	/**
+	 * 数据库名称
+	 */
+	protected String dbName;
+
+	/**
+	 * id
+	 */
+	
+	
 	/**
 	 * 数据库
 	 */
@@ -43,6 +56,17 @@ public abstract class BaseDataDao {
 	public BaseDataDao(Context context) {
 		mContext = context;
 	}
+	protected BaseDataDao(Context context, String dbName) {
+		mContext = context;
+		this.dbName = dbName;
+	//	setTableName();
+	}
+
+	/**
+	 * 设置table名称
+	 */
+//	public abstract void setTableName();
+
 
 	/**
 	 * 解析cursor

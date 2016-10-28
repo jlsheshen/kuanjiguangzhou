@@ -3,13 +3,14 @@ package com.edu.basicaccountingforguangzhou.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.edu.basicaccountingforguangzhou.Constant;
-import com.edu.library.data.DBHelper;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.edu.basicaccountingforguangzhou.Constant;
+import com.edu.library.data.DBHelper;
 
 /**
  * 基础题型（单多判）数据库操作类
@@ -57,6 +58,8 @@ public class SubjectBasicDataDao extends BaseDataDao {
 			instance = new SubjectBasicDataDao(context);
 		return instance;
 	}
+	
+	
 
 	/**
 	 * 根据题库ids获取数据
@@ -617,22 +620,75 @@ public class SubjectBasicDataDao extends BaseDataDao {
 		return totalScore;
 	}
 
-	@Override
-	public SubjectBasicData parseCursor(Cursor curs) {
-		SubjectBasicData data = new SubjectBasicData();
-		data.setId(curs.getInt(curs.getColumnIndex(ID)));
-		data.setAnswer(curs.getString(curs.getColumnIndex(ANSWER)));
-		data.setOption(curs.getString(curs.getColumnIndex(OPTION)));
-		data.setQuestion(curs.getString(curs.getColumnIndex(QUESTION)));
-		data.setType(curs.getInt(curs.getColumnIndex(TYPE)));
-		data.setUserAnswer(curs.getString(curs.getColumnIndex(UANSWER)));
-		data.setRemark(curs.getString(curs.getColumnIndex(REMARK)));
-		data.setAnalysis(curs.getString(curs.getColumnIndex(ANALYSIS)));
-		data.setChapter_id(curs.getInt(curs.getColumnIndex(CHAPTER_ID)));
-		data.setRight(curs.getInt(curs.getColumnIndex(IS_CORRECT)) == 1 ? true : false);
-		data.setServerId(curs.getInt(curs.getColumnIndex(SERVER_ID)));
-		data.setuScore(curs.getFloat(curs.getColumnIndex(USCORE)));
-		data.setScore(curs.getFloat(curs.getColumnIndex(SCORE)));
+
+
+	
+
+	public SubjectBasicData getData(int subjectId, SQLiteDatabase db) {
+		SubjectBasicData data = null;
+		Cursor curs = null;
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID = " + subjectId;
+		try {
+			curs = db.rawQuery(sql, null);
+			if (curs != null) {
+				if (curs.getCount() == 0)
+					return null;
+				curs.moveToFirst();
+				data = parseCursor(curs);
+
+				Log.d(TAG, "data:" + data);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
 		return data;
 	}
+
+	@Override
+	public SubjectBasicData parseCursor(Cursor curs) {
+		SubjectBasicData subjectData = new SubjectBasicData();
+		subjectData.setId(curs.getInt(0));
+		subjectData.setChapterId(curs.getInt(1));
+		subjectData.setFlag(curs.getInt(2));
+		subjectData.setSubjectType(curs.getInt(3));
+		subjectData.setQuestion(curs.getString(4));
+		subjectData.setOption(curs.getString(5));
+		subjectData.setAnswer(curs.getString(6));
+		subjectData.setAnalysis(curs.getString(7));
+		subjectData.setErrorCount(curs.getInt(8));
+		subjectData.setScore(curs.getInt(9));
+		subjectData.setFavorite(curs.getInt(10));
+		subjectData.setRemark(curs.getString(11));
+
+		return subjectData;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

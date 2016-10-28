@@ -1,11 +1,11 @@
 package com.edu.basicaccountingforguangzhou.data;
 
 
-import com.edu.basicaccountingforguangzhou.Constant;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+
+import com.edu.basicaccountingforguangzhou.Constant;
 
 public class PointDataDao extends BaseDataDao{
 	
@@ -87,5 +87,6 @@ public class PointDataDao extends BaseDataDao{
 //		data.setRemark(curs.getString(remarkIndex));
 		return null;
 	}
+	
 
 }

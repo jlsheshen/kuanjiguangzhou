@@ -3,12 +3,12 @@ package com.edu.basicaccountingforguangzhou.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.edu.basicaccountingforguangzhou.Constant;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
+
+import com.edu.basicaccountingforguangzhou.Constant;
 
 public class FirstSubjectDataDao extends BaseDataDao{
 
@@ -88,6 +88,7 @@ public class FirstSubjectDataDao extends BaseDataDao{
 
 	@Override
 	public BaseData getDataById(int id) {
+
 		FirstSubjectData data = null;
 		Cursor curs = null;
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID = " + id;
@@ -119,8 +120,8 @@ public class FirstSubjectDataDao extends BaseDataDao{
 		} finally {
 			closeDb(mDb, curs);
 		}
-
 		return data;
+
 	}
 
 	
@@ -228,9 +229,19 @@ public class FirstSubjectDataDao extends BaseDataDao{
 		return datas;
 	}
 
+//	@Override
+//	public void setTableName() {
+//		TABLE_NAME = "TB_FIRST_SUBJECT";
+//		
+//	}
+
 	@Override
 	public BaseData parseCursor(Cursor curs) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+	
 }

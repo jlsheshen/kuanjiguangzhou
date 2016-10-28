@@ -3,40 +3,41 @@ package com.edu.basicaccountingforguangzhou.data;
 import java.io.Serializable;
 
 
-/**
- * 数据封装基类
- * 
- * @author lucher
- * 
- */
-public class BaseData implements Serializable{
-
-	private static final long serialVersionUID = 1L;
-
 	/**
-	 * 数据索引
+	 * 数据封装基类
+	 * 
+	 * @author lucher
+	 * 
 	 */
-	protected int id;
+	public class BaseData implements Serializable{
 
-	/**
-	 * 备注
-	 */
-	protected String remark;
+		private static final long serialVersionUID = 1L;
 
-	public int getId() {
-		return id;
-	}
+		/**
+		 * 数据索引
+		 */
+		protected int id;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+		/**
+		 * 备注
+		 */
+		protected String remark;
 
-	public String getRemark() {
-		return remark;
-	}
+		public int getId() {
+			return id;
+		}
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public String getRemark() {
+			return remark;
+		}
+
+		public void setRemark(String remark) {
+			this.remark = remark;
+		}
+
 
 }

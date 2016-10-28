@@ -1,6 +1,8 @@
 package com.edu.basicaccountingforguangzhou.model;
 
+import com.edu.basicaccountingforguangzhou.Constant;
 import com.edu.basicaccountingforguangzhou.data.SubjectBillDataDao;
+import com.edu.basicaccountingforguangzhou.testbill.data.SubjectTestDataDao;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -37,8 +39,8 @@ public class SubjectBillDataModel {
 	public void updateUscore(int id, float uscore) {
 		// 更新数据库
 		ContentValues values = new ContentValues();
-		values.put(SubjectBillDataDao.USCORE, uscore);
-		SubjectBillDataDao.getInstance(mContext).updateData(id, values);
+		values.put(SubjectTestDataDao.USCORE, uscore);
+		SubjectTestDataDao.getInstance(mContext).updateData(id, values);
 	}
 
 	/**
@@ -50,9 +52,9 @@ public class SubjectBillDataModel {
 	 */
 	public void updateContent(int id, float uscore, int completed) {
 		ContentValues values = new ContentValues();
-		values.put(SubjectBillDataDao.USCORE, uscore);
-		values.put(SubjectBillDataDao.IS_COMPLETED, completed);
-		SubjectBillDataDao.getInstance(mContext).updateData(id, values);
+		values.put(SubjectTestDataDao.STATE, uscore);
+		values.put(SubjectTestDataDao.USCORE, completed);
+		SubjectTestDataDao.getInstance(mContext).updateData(id, values);
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.edu.basicaccountingforguangzhou.data;
 
+
+
+
 public class ExampleMixData extends BaseData {
 	// 包含文字、图片名、视频地址
 	private String content;

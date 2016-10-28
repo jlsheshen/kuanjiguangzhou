@@ -206,6 +206,7 @@ public class SubjectSingleSelectView extends BaseScrollView implements OnClickLi
 			break;
 		default:
 			String answer = v.getTag().toString();
+			Log.e(TAG, "answer是" +answer );
 			handleOnClick(answer);
 			SubjectModel.getInstance(getContext()).updateRemark(mData.getId(), "1");
 			SubjectBasicData data = (SubjectBasicData) SubjectBasicDataDao.getInstance(getContext()).getDataById(mData.getId());

@@ -168,6 +168,8 @@ public class SubjectJudgeView extends BaseScrollView implements OnClickListener 
 			rbTrue.setTextColor(getResources().getColor(R.color.wathet_blue));
 			rbFalse.setTextColor(Color.BLACK);
 			String answerA = v.getTag().toString();
+			Log.e(TAG, "answer是" +answerA );
+
 			handleOnClick(answerA);
 			// btnSend.setVisibility(View.VISIBLE);
 			handler.removeMessages(0);

@@ -3,12 +3,12 @@ package com.edu.basicaccountingforguangzhou.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.edu.basicaccountingforguangzhou.Constant;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
+
+import com.edu.basicaccountingforguangzhou.Constant;
 
 public class SecondSubjectDataDao extends BaseDataDao{
 	
@@ -58,9 +58,11 @@ public class SecondSubjectDataDao extends BaseDataDao{
 				for (int i = 0; i < count; i++) {
 					SecondSubjectData data = new SecondSubjectData();
 					data.setId(curs.getInt(curs.getColumnIndex(ID)));
+
 					data.setName(curs.getString(curs.getColumnIndex(NAME)));
 					data.setDependentid(curs.getInt(curs.getColumnIndex(DEPENDENTID)));
 					data.setRemark(curs.getString(curs.getColumnIndex(REMARK)));
+
 					datas.add(data);
 
 					Log.i(TAG, "data:" + data);
@@ -80,6 +82,7 @@ public class SecondSubjectDataDao extends BaseDataDao{
 
 	@Override
 	public BaseData getDataById(int id) {
+
 		SecondSubjectData data = null;
 		Cursor curs = null;
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID = " + id;
@@ -101,6 +104,7 @@ public class SecondSubjectDataDao extends BaseDataDao{
 				data.setName(curs.getString(nameIndex));
 				data.setDependentid(curs.getInt(dependentidIndex));
 				data.setRemark(curs.getString(remarkIndex));
+		
 
 				Log.d(TAG, "data:" + data);
 			}
@@ -148,6 +152,7 @@ public class SecondSubjectDataDao extends BaseDataDao{
 					data.setRemark(curs.getString(remarkIndex));
 					datas.add(data);
 
+		
 					Log.i(TAG, "data:" + data);
 					if (curs.moveToNext() == false)
 						break;

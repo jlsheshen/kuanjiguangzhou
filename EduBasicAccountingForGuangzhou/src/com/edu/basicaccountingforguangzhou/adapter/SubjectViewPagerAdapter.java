@@ -3,8 +3,12 @@ package com.edu.basicaccountingforguangzhou.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.edu.basicaccountingforguangzhou.Constant;
+import com.edu.basicaccountingforguangzhou.data.BaseSubjectData;
 import com.edu.basicaccountingforguangzhou.data.TestData;
 import com.edu.basicaccountingforguangzhou.fragment.SubjectContentPagerFragment;
+import com.edu.basicaccountingforguangzhou.subject.bill.listener.WhileIsBillListener;
+import com.edu.basicaccountingforguangzhou.subject.data.SignData;
 import com.edu.basicaccountingforguangzhou.view.AutoJumpNextListener;
 import com.edu.basicaccountingforguangzhou.view.SubjectViewListener;
 
@@ -47,6 +51,13 @@ public class SubjectViewPagerAdapter extends FragmentPagerAdapter {
 	 * 答题模式，与BaseScrollView里的testMode对应
 	 */
 	private int testMode;
+	
+	
+	/**
+	 * 禁止左右滑动的监听
+	 * 
+	 */
+	private WhileIsBillListener whileIsBillListener;
 
 	public SubjectViewPagerAdapter(FragmentManager childFragmentManager, List<TestData> datas, AutoJumpNextListener autoListener, SubjectViewListener listener, int testMode) {
 		super(childFragmentManager);
@@ -60,6 +71,11 @@ public class SubjectViewPagerAdapter extends FragmentPagerAdapter {
 			}
 		}
 	}
+
+	public void setWhileIsBillListener(WhileIsBillListener whileIsBillListener) {
+		this.whileIsBillListener = whileIsBillListener;
+	}
+
 
 	public void setData(List<TestData> datas) {
 		mSubjectList.clear();
@@ -83,6 +99,11 @@ public class SubjectViewPagerAdapter extends FragmentPagerAdapter {
 		if (mPagerList.get(position) == null) {
 			mPagerList.set(position, SubjectContentPagerFragment.newInstance(mSubjectList.get(position), mAutoListener, mListener, testMode));
 		}
+		
+//		if(mSubjectList.get(position).getSubjectType() == Constant.SUBJECT_TYPE_BILL){
+//			//whileIsBillListener.vpNoTouch();
+//		}
+		
 		return mPagerList.get(position);
 	}
 
@@ -141,6 +162,19 @@ public class SubjectViewPagerAdapter extends FragmentPagerAdapter {
 		if (pager != null)
 			pager.reset();
 	}
+	
+	
+
+	/**
+	 * 获取指定数据
+	 * 
+	 * @param position
+	 * @return
+	 */
+	public TestData getData(int position) {
+		return mSubjectList.get(position);
+	}
+	
 
 	/**
 	 * 保存某题的用户答案
@@ -177,4 +211,21 @@ public class SubjectViewPagerAdapter extends FragmentPagerAdapter {
 		if (pager != null)
 			pager.setPicturesVisbilte();
 	}
+
+	/**
+	 * 盖章
+	 * 
+	 * @param index
+	 *            题目索引
+	 * @param sign
+	 *            印章数据
+	 */
+	
+	public void sign(int index, SignData signData) {
+		mPagerList.get(index).sign(signData);
+	}
+
+	
+	
+	
 }

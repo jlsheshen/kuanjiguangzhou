@@ -1,5 +1,6 @@
 package com.edu.basicaccountingforguangzhou.data;
 
+
 /**
  * tb_record
  * 

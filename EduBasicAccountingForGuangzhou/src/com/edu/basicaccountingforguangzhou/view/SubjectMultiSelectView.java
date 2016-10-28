@@ -252,6 +252,8 @@ public class SubjectMultiSelectView extends BaseScrollView implements OnClickLis
 			break;
 		case R.id.btn_submit:
 			String answer = getUserAnswer();
+			Log.e(TAG, "answer是" +answer );
+
 			if (answer.equals("")) {
 				answer = "-1";
 			}

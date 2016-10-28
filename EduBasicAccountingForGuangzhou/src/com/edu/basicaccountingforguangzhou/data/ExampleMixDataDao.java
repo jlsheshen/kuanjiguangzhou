@@ -3,12 +3,12 @@ package com.edu.basicaccountingforguangzhou.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.edu.basicaccountingforguangzhou.Constant;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
+
+import com.edu.basicaccountingforguangzhou.Constant;
 
 public class ExampleMixDataDao extends BaseDataDao {
 	// 内容
@@ -79,5 +79,11 @@ public class ExampleMixDataDao extends BaseDataDao {
 		data.setType(curs.getInt(typeIndex));
 		return data;
 	}
+
+//	@Override
+//	public void setTableName() {
+//		TABLE_NAME = "Example_MIX_CONTENT";
+//		
+//	}
 
 }

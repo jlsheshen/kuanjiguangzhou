@@ -3,12 +3,12 @@ package com.edu.basicaccountingforguangzhou.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.edu.basicaccountingforguangzhou.Constant;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
+
+import com.edu.basicaccountingforguangzhou.Constant;
 
 /**
  * 典型类题数据库操作类
@@ -129,4 +129,10 @@ public class ExampleDataDao extends BaseDataDao {
 		data.setImage_content(curs.getString(imageContent));
 		return data;
 	}
+
+//	@Override
+//	public void setTableName() {
+//		TABLE_NAME = "EXAMPLE";
+//		
+//	}
 }

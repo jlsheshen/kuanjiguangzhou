@@ -3,14 +3,14 @@ package com.edu.basicaccountingforguangzhou.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.edu.basicaccountingforguangzhou.Constant;
-import com.edu.library.data.DBHelper;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
+
+import com.edu.basicaccountingforguangzhou.Constant;
+import com.edu.library.data.DBHelper;
 
 /**
  * 分录数据操作dao
@@ -453,4 +453,6 @@ public class SubjectEntryDataDao extends BaseDataDao {
 		data.setChapter_id(curs.getInt(chapter_id));
 		return data;
 	}
+
+
 }

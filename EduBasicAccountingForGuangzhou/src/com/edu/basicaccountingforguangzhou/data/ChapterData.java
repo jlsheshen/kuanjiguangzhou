@@ -1,11 +1,14 @@
 package com.edu.basicaccountingforguangzhou.data;
 
+
 /**
  * 产品类别封装
  * 
  * @author lucher
  * 
  */
+
+
 public class ChapterData extends BaseData {
 
 	/**
@@ -32,7 +35,6 @@ public class ChapterData extends BaseData {
 	public int getParentId() {
 		return parentId;
 	}
-
 	public void setParentId(int parentId) {
 		this.parentId = parentId;
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.edu.basicaccountingforguangzhou.Constant;
 import com.edu.basicaccountingforguangzhou.R;
+import com.edu.basicaccountingforguangzhou.data.BaseSubjectData;
 import com.edu.basicaccountingforguangzhou.data.SubjectBasicData;
 import com.edu.basicaccountingforguangzhou.data.SubjectBillData;
 import com.edu.basicaccountingforguangzhou.data.SubjectEntryData;
@@ -13,6 +14,7 @@ import com.edu.basicaccountingforguangzhou.view.IOnClickListener;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,6 +28,7 @@ import android.widget.Button;
  * 
  */
 public class CardAdapterForPractice extends BaseAdapters {
+	private static final String TAG = "CardAdapterForPractice";
 	// * context
 	private Context context;
 	// * 数据
@@ -51,8 +54,40 @@ public class CardAdapterForPractice extends BaseAdapters {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		convertView = LayoutInflater.from(context).inflate(R.layout.btn_card_practice, parent, false);
 		Button btnCard = (Button) convertView;
+		//Log.e(TAG, "datas一个的长度是" + data.size());
+//		for (int i = 0; i < data.size(); i++) {
+////			Log.e(TAG, "第" +i + "个data的type是" +data.get(i).getData().getSubjectType());
+//		//	/Log.e(TAG, "第" +i + "个data的getSubjectId是" +data.get(i).getSubjectId());
+//		
+//		}
+		
+		
 		btnCard.setBackgroundResource(getSrc(data.get(position)));
-		btnCard.setText((data.get(position).getData()).getIndexName());
+		TestData testData = data.get(position);
+		BaseSubjectData baseSubjectData ;
+		if (testData.getSubjectType() == Constant.SUBJECT_TYPE_BILL) {
+			
+			baseSubjectData	=testData.getBillData().getSubjectData();
+			Log.e(TAG, "第" + "个data的getSubjectId是" +testData.getSubjectId());
+			Log.e(TAG, "第"  + "个data的getIndexName是" +baseSubjectData.getIndexName());
+
+		}else{
+			
+			 baseSubjectData =testData.getData();
+			 Log.e(TAG, "第" + "个data的getSubjectId是" +testData.getSubjectId());
+				Log.e(TAG, "第"  + "个data的getIndexName是" +baseSubjectData.getIndexName());
+
+		}
+		String indexName = baseSubjectData.getIndexName();
+//		for (int i = 0; i < data.size(); i++) {
+//		
+//
+//	
+//		}
+		
+		btnCard.setText(indexName);
+
+//		btnCard.setText((data.get(position).getData()).getIndexName());
 		btnCard.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -62,7 +97,7 @@ public class CardAdapterForPractice extends BaseAdapters {
 				} else if (data.get(position).getSubjectType() == Constant.SUBJECT_TYPE_ENTRY) {
 					iOnClickListener.ionClick(((SubjectEntryData) data.get(position).getData()).getSubjectIndex() - 1);
 				} else {
-					iOnClickListener.ionClick(((SubjectBillData) data.get(position).getData()).getSubjectIndex() - 1);
+					iOnClickListener.ionClick(((SubjectBillData) data.get(position).getBillData().getSubjectData()).getSubjectIndex() - 1);
 				}
 			}
 		});
