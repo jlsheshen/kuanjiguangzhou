@@ -392,6 +392,9 @@ public class SubjectEntryDataDao extends BaseDataDao {
 				data.setChildren(curs.getString(curs.getColumnIndex(CHILDREN)));
 				data.setCorrect(curs.getInt(curs.getColumnIndex(IS_CORRECT)) == 0 ? false : true);
 				data.setScore(curs.getFloat(curs.getColumnIndex(SCORE)));
+				Log.e("得分专用Log", "获取得分2" + data.getScore());
+
+				
 				Log.d(TAG, "data:" + data);
 			}
 
@@ -451,6 +454,9 @@ public class SubjectEntryDataDao extends BaseDataDao {
 		data.setLoanUser(curs.getString(loanuserIndex));
 		data.setRemark(curs.getString(remarkIndex));
 		data.setChapter_id(curs.getInt(chapter_id));
+		
+		Log.e("得分专用Log", "获取得分6" + data.getScore());
+
 		return data;
 	}
 

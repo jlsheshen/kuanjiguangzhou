@@ -591,6 +591,8 @@ public class SubjectBasicDataDao extends BaseDataDao {
 				data.setRight(curs.getInt(curs.getColumnIndex(IS_CORRECT)) == 1 ? true : false);
 				data.setType(curs.getInt(curs.getColumnIndex(TYPE)));
 				data.setScore(curs.getFloat(curs.getColumnIndex(SCORE)));
+				Log.e("得分专用Log", "获取得分1" + data.getScore());
+
 				if (data.getType() == Constant.SUBJECT_TYPE_SINGLE_SELECT || data.getType() == Constant.SUBJECT_TYPE_JUDGE) {
 					if (data.isRight()) {
 						if (isWord) {// 套题模式
@@ -655,11 +657,16 @@ public class SubjectBasicDataDao extends BaseDataDao {
 		subjectData.setQuestion(curs.getString(4));
 		subjectData.setOption(curs.getString(5));
 		subjectData.setAnswer(curs.getString(6));
-		subjectData.setAnalysis(curs.getString(7));
-		subjectData.setErrorCount(curs.getInt(8));
-		subjectData.setScore(curs.getInt(9));
-		subjectData.setFavorite(curs.getInt(10));
-		subjectData.setRemark(curs.getString(11));
+		subjectData.setUserAnswer(curs.getString(7));
+		subjectData.setAnalysis(curs.getString(8));
+	//	subjectData.setErrorCount(curs.getInt(9));
+		subjectData.setScore(curs.getInt(10));
+		subjectData.setFavorite(curs.getInt(9));
+		subjectData.setuScore(curs.getInt(11));
+
+		subjectData.setRemark(curs.getString(12));
+		//Log.e("得分专用Log", "获取得分3---" + subjectData.getScore() + "id 是" + subjectData.getQuestion() );
+
 
 		return subjectData;
 	}

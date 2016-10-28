@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.edu.basicaccountingforguangzhou.subject.SubjectState;
 import com.edu.basicaccountingforguangzhou.subject.SubjectType;
 import com.edu.basicaccountingforguangzhou.subject.TestMode;
+import com.edu.basicaccountingforguangzhou.subject.data.TestGroupBillData;
 
 
 /**
@@ -20,6 +21,7 @@ public  class TestData extends BaseData implements Serializable{
 	 */
 	
 	private static final long serialVersionUID = 1323L;
+	
 	// 服务器端id号
 	protected int serverId;
 	// 类别，1-课后练习，2-随堂练习
@@ -44,7 +46,18 @@ public  class TestData extends BaseData implements Serializable{
 	 */
 	protected TestBillData billData;
 	
+	private TestGroupBillData testGroupBillData;
 	
+	
+	
+	public TestGroupBillData getTestGroupBillData() {
+		return testGroupBillData;
+	}
+
+	public void setTestGroupBillData(TestGroupBillData testGroupBillData) {
+		this.testGroupBillData = testGroupBillData;
+	}
+
 	public TestBillData getBillData() {
 		return billData;
 	}

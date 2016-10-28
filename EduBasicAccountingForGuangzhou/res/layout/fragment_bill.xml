@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="#F2F1F0"
     android:gravity="center" >
-     
+
+    
 
     <com.edu.basicaccountingforguangzhou.subject.view.ZoomableBillView
         android:id="@+id/billView"
@@ -13,6 +14,66 @@
         android:layout_height="wrap_content"
         app:test="test" >
     </com.edu.basicaccountingforguangzhou.subject.view.ZoomableBillView>
+    
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+        <RelativeLayout
+            android:layout_width="810dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dip" >
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_error_count"
+                android:drawablePadding="15dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="综合题"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_size_small"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+      
+
+
+        <LinearLayout
+            android:id="@+id/ly_switch"
+            android:layout_width="220dp"
+            android:layout_height="53dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <Button
+                android:id="@+id/btn_show_user"
+                android:layout_width="105dp"
+                android:layout_height="52dp"
+                android:background="@drawable/btn_selector_switch"
+                android:text="答题结果"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_show_right"
+                android:layout_width="105dp"
+                android:layout_height="52dp"
+                android:background="@drawable/btn_selector_switch"
+                android:text="正确答案"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btnZoomOut"
@@ -32,5 +93,17 @@
         android:focusable="false"
         android:onClick="onClick"
         android:text="+" />
+         <TextView
+        android:id="@+id/tv_subject_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_error_count"
+        android:drawablePadding="15dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="单选题"
+        android:textColor="@color/white"
+        android:textSize="@dimen/txt_size_small"
+        android:visibility="gone" />
 
 </RelativeLayout>

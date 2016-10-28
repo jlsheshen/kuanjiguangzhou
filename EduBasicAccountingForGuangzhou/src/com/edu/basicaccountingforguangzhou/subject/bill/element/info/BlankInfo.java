@@ -1,5 +1,7 @@
 package com.edu.basicaccountingforguangzhou.subject.bill.element.info;
 
+import com.edu.library.wifiscore.ScoreEntity;
+
 /**
  * 对应空的数据
  * 
@@ -16,8 +18,8 @@ public class BlankInfo extends BaseElementInfo {
 	private boolean editable;
 	// 字体大小
 	private int textSize;
-	
-	//是否答对，程序维护
+
+	// 是否答对，程序维护
 	private boolean right;
 
 	public BlankInfo() {
@@ -82,4 +84,8 @@ public class BlankInfo extends BaseElementInfo {
 		this.right = right;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("id:%s,answer:%s,uAnswer:%s,score:%s", getId(), answer, uAnswer, getScore());
+	}
 }

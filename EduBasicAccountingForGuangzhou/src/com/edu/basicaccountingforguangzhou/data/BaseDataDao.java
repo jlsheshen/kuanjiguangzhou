@@ -2,6 +2,7 @@ package com.edu.basicaccountingforguangzhou.data;
 
 import java.util.List;
 
+import android.R.string;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -44,6 +45,8 @@ public abstract class BaseDataDao {
 	 * id
 	 */
 	public static String ID = "ID";
+	
+	public static String SUBJECT_ID = "SUBJECT_ID";
 	/**
 	 * 备注，预留字段
 	 */
@@ -107,6 +110,7 @@ public abstract class BaseDataDao {
 
 		return data;
 	}
+	
 	
 	/**
 	 * 通过Test_ID将sendExamID存入Remark字段

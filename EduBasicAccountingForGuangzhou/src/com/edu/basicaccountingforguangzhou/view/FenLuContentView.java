@@ -67,7 +67,7 @@ public class FenLuContentView extends RelativeLayout implements OnClickListener 
 		inflater.inflate(R.layout.view_calculation_secend, this);
 		mData = (SubjectEntryData) data.getData();
 		mState = data.getState();
-		mTestMode = testMode;
+		this.mTestMode = testMode;
 		mTestData = data;
 		ltQuestionItemView = new ArrayList<EntryView>();
 		initView();
@@ -244,7 +244,7 @@ public class FenLuContentView extends RelativeLayout implements OnClickListener 
 	private void subDo(View v) {
 		llyoutQuestion.removeAllViews();
 		llyoutQuestion.addView(ltQuestionItemView.get(v.getId()));
-		if (v.getId() == subjectIds.length - 1 && mState == 0) {
+		if (v.getId() == subjectIds.length - 1 && mState == 0 && mTestMode != 2) {
 			btnFinish.setVisibility(View.VISIBLE);
 		} else {
 			btnFinish.setVisibility(View.GONE);

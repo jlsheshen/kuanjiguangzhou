@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.edu.basicaccountingforguangzhou.Constant;
+import com.edu.basicaccountingforguangzhou.subject.SubjectConstant;
 import com.edu.basicaccountingforguangzhou.subject.bill.element.ElementType;
 import com.edu.basicaccountingforguangzhou.subject.bill.element.info.BaseElementInfo;
 import com.edu.basicaccountingforguangzhou.subject.bill.element.info.BlankInfo;
@@ -16,7 +18,9 @@ import com.edu.basicaccountingforguangzhou.subject.bill.element.info.FlashInfo;
 import com.edu.basicaccountingforguangzhou.subject.bill.element.info.SignInfo;
 import com.edu.basicaccountingforguangzhou.subject.bill.template.BillTemplate;
 import com.edu.basicaccountingforguangzhou.subject.util.BitmapParseUtil;
+import com.edu.library.data.DBHelper;
 import com.edu.library.util.ToastUtil;
+
 
 /**
  * 单据模板数据库操作类
@@ -73,13 +77,11 @@ public class TemplateDataDao {
 					template = new BillTemplate();
 					template.setId(curs.getInt(0));
 					template.setName(curs.getString(1));
-					template.setBitmap(BitmapParseUtil.parse(curs.getString(2), mContext));
+					template.setBitmap(curs.getString(2));
 					template.setFlag(curs.getInt(3));
 				}
 				BaseElementInfo element;
-				if (i==16) {
 
-				}
 
 				int type = curs.getInt(7);
 
@@ -88,11 +90,7 @@ public class TemplateDataDao {
 					element = new SignInfo();
 					initElement(element, curs);
 					((SignInfo) element).setUser(false);
-					
-					Bitmap bitmap = getSignBitmap(curs.getInt(12), db);
-
-					((SignInfo) element).setBitmap(bitmap);
-
+					((SignInfo) element).setBitmap(getSignBitmap(curs.getInt(12), db));
 					break;
 				case ElementType.TYPE_FLASH:
 					element = new FlashInfo();
@@ -124,7 +122,6 @@ public class TemplateDataDao {
 
 		return template;
 	}
-
 	/**
 	 * 初始化element
 	 * 
@@ -139,7 +136,48 @@ public class TemplateDataDao {
 		element.setWidth(curs.getInt(10));
 		element.setHeight(curs.getInt(11));
 		element.setScore(curs.getFloat(13));
+		element.setRemark(curs.getString(14));
 	}
+	
+	/**
+	 * 加载用户印章到模板里
+	 * 
+	 * @param uSign
+	 */
+	public List<SignInfo> loadUserSigns(String uSign) {
+		List<SignInfo> list = new ArrayList<SignInfo>(1);
+		SQLiteDatabase db = null;
+		try {
+			DBHelper helper = new DBHelper(mContext, Constant.DATABASE_NAME, null);
+			db = helper.getWritableDatabase();
+
+			String[] signs = uSign.split(SubjectConstant.SEPARATOR_ITEM);
+			for (int i = 0; i < signs.length; i++) {
+				String[] infos = signs[i].split(SubjectConstant.SEPARATOR_SIGN_INFO);
+				SignInfo info = new SignInfo();
+				
+				Log.e("查看sgin专用","infos" +  signs[i] );
+
+				info.setId(Integer.parseInt(infos[0]));
+				
+				info.setType(ElementType.TYPE_SIGN);
+				info.setX(Float.parseFloat(infos[1]));
+				info.setY(Float.parseFloat(infos[2]));
+				info.setUser(true);
+				info.setBitmap(getSignBitmap(info.getId(), db));
+				list.add(info);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (db != null) {
+				db.close();
+			}
+		}
+
+		return list;
+	}
+
 
 	/**
 	 * 获取印章图片
@@ -147,18 +185,15 @@ public class TemplateDataDao {
 	 * @param id
 	 * @return
 	 */
-	public Bitmap getSignBitmap(int id, SQLiteDatabase db) {
-		Bitmap bitmap = null;
+	public String getSignBitmap(int id, SQLiteDatabase db) {
+		String bitmap = null;
 		String sql = "SELECT * FROM TB_SIGN WHERE ID = " + id;
-
 		Cursor curs = db.rawQuery(sql, null);
-
 		if (curs != null) {
-
 			curs.moveToFirst();
-			String uri = curs.getString(3);
+			bitmap = curs.getString(3);
+			Log.e("查看sgin专用","bitmap" + bitmap + "id" + id);
 
-			bitmap = BitmapParseUtil.parse(uri, mContext);
 		}
 		return bitmap;
 	}

@@ -155,15 +155,17 @@ public class SubjectTestResult extends EduBaseActivity implements OnClickListene
 					}
 
 				} else {// 填制
-					if (((SubjectBillData) subjectDatas.get(i).getData()).getScore() == ((SubjectBillData) subjectDatas.get(i).getData()).getuScore()) {
-						totalSores = (int) (totalSores + ((SubjectBillData) subjectDatas.get(i).getData()).getScore());
-					} else {
-						if (subjectDatas.get(i).getState() != 0) {
-							totalSores = (int) (totalSores + ((SubjectBillData) subjectDatas.get(i).getData()).getuScore());
-							subjectDatas.get(i).setErrorCount(subjectDatas.get(i).getErrorCount() + 1);
-							TestDataModel.getInstance(mContext).updateStateAndErrorCount(subjectDatas.get(i).getId(), 2, subjectDatas.get(i).getErrorCount());
-						}
-					}
+//					if (( (SubjectBillData) subjectDatas.get(i).getBillData().getSubjectData()).getSCORE() == ((SubjectBillData) subjectDatas.get(i).getBillData().getSubjectData()).getSCORE()) {
+//						totalSores = (int) (totalSores + ((SubjectBillData) subjectDatas.get(i).getBillData().getSubjectData()).getSCORE());
+//					} else {
+//						if (subjectDatas.get(i).getState() != 0) {
+//							totalSores = (int) (totalSores + ((SubjectBillData) subjectDatas.get(i).getBillData().getSubjectData()).getSCORE());
+//							subjectDatas.get(i).setErrorCount(subjectDatas.get(i).getErrorCount() + 1);
+//							TestDataModel.getInstance(mContext).updateStateAndErrorCount(subjectDatas.get(i).getId(), 2, subjectDatas.get(i).getErrorCount());
+//						}
+//					}
+					totalSores = (int) (totalSores + (subjectDatas.get(i).getBillData().getuScore()));
+
 				}
 			}
 		} else {

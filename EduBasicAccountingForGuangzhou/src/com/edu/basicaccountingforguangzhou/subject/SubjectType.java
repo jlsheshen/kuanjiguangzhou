@@ -22,15 +22,15 @@ public class SubjectType {
 	/**
 	 * 填空题
 	 */
-	public static final int SUBJECT_BLANK = 4;
+//	public static final int SUBJECT_BLANK = 4;
 	/**
 	 * 分录题
 	 */
-	public static final int SUBJECT_ENTRY = 5;
+	public static final int SUBJECT_ENTRY = 4;
 	/**
 	 * 单据题
 	 */
-	public static final int SUBJECT_BILL = 6;
+	public static final int SUBJECT_BILL = 5;
 	/**
 	 * 混合式分录题
 	 */
@@ -39,4 +39,8 @@ public class SubjectType {
 	 * 简答题
 	 */
 	public static final int SUBJECT_SHORT_ANSWER = 8;
+	/**
+	 * 分组单据题
+	 */
+	public static final int SUBJECT_GROUP_BILL = 9;
 }

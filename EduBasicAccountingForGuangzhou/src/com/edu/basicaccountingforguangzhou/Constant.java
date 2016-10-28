@@ -42,6 +42,10 @@ public class Constant {
 	 * 题型：填制
 	 */
 	public static final int SUBJECT_TYPE_BILL = 5;
+	/**
+	 * 分组单据题
+	 */
+	public static final int SUBJECT_GROUP_BILL = 9;
 
 	/**
 	 * 当前选中的章节id

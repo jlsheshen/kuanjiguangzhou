@@ -80,6 +80,8 @@ public class SubjectBasicDataDao extends BaseDataDao {
 		subjectData.setScore(curs.getInt(9));
 		subjectData.setFavorite(curs.getInt(10));
 		subjectData.setRemark(curs.getString(11));
+		Log.e("得分专用Log", "获取得分4" + subjectData.getScore());
+
 
 		return subjectData;
 	}

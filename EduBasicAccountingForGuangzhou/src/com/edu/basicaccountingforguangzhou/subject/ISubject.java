@@ -1,8 +1,6 @@
 package com.edu.basicaccountingforguangzhou.subject;
 
-import com.edu.basicaccountingforguangzhou.data.BaseData;
 import com.edu.basicaccountingforguangzhou.data.TestData;
-
 
 
 /**
@@ -18,8 +16,7 @@ public interface ISubject {
 	 * 
 	 * @param data
 	 */
-//	void applyData(BaseTestData data);
-	void applyData(TestData  data);
+	void applyData(TestData data,int testMode);
 
 	/**
 	 * 保存答案
@@ -42,4 +39,10 @@ public interface ISubject {
 	 * 重置该题
 	 */
 	void reset();
+	
+	/**
+	 * 设置题目视图监听
+	 * @param listener
+	 */
+	void setSubjectListener(SubjectListener listener);
 }

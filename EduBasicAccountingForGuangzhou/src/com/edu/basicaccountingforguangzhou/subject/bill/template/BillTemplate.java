@@ -13,11 +13,11 @@ import com.edu.basicaccountingforguangzhou.subject.bill.element.info.BaseElement
  * @author lucher
  * 
  */
-public class BillTemplate  {
+public class BillTemplate  implements Serializable{
 	// 模板id
 	private int id;
 	// 底图图片
-	private Bitmap bitmap;
+	private String bitmap;
 	// 模板名称
 	private String name;
 	// 预置标识，-1：预置，其他：非预置
@@ -45,11 +45,11 @@ public class BillTemplate  {
 		this.name = name;
 	}
 
-	public Bitmap getBitmap() {
+	public String getBitmap() {
 		return bitmap;
 	}
 
-	public void setBitmap(Bitmap bitmap) {
+	public void setBitmap(String bitmap) {
 		this.bitmap = bitmap;
 	}
 

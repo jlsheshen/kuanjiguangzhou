@@ -52,6 +52,10 @@ public class ElementType {
 	 */
 	public static final int TYPE_KEY_WORD = 20;
 	/**
+	 * 普通空-内容居中
+	 */
+	public static final int TYPE_NORMAL_CENTER = 21;
+	/**
 	 * 印章
 	 */
 	public static final int TYPE_SIGN = 30;

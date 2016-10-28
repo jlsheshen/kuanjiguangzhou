@@ -18,7 +18,7 @@ public class TextInfoDataDao extends BaseDataDao {
 	public static final String ID = "ID";
 	public static final String NAME = "NAME";// 试题名称
 	public static final String LOCK = "LOCK";// 是否解锁
-	public static final String DONE = "DONE";// 是否解锁
+	public static final String DONE = "DONE";// 是否完成
 	public static final String SCORE = "SCORE";// 分数
 
 	/**

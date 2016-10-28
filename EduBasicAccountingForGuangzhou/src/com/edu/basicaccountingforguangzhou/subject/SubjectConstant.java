@@ -28,6 +28,10 @@ public class SubjectConstant {
 	 * 不可编辑前缀标识-目前主要用于单据题中空不需要用户填写，而是直接显示正确答案的情况
 	 */
 	public static final String FLAG_PREFIX_DISABLED = "***";
+	/**
+	 * 印章数据分割符
+	 */
+	public static final String SEPARATOR_SIGN_INFO = "-";
 
 	/**
 	 * 单据元素类别为空的范围起始值

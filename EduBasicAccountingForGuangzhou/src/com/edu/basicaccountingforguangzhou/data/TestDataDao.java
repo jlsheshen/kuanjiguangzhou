@@ -12,9 +12,14 @@ import android.util.Log;
 
 import com.edu.basicaccountingforguangzhou.Constant;
 import com.edu.basicaccountingforguangzhou.subject.ISubject;
+import com.edu.basicaccountingforguangzhou.subject.SubjectConstant;
+import com.edu.basicaccountingforguangzhou.subject.SubjectState;
 import com.edu.basicaccountingforguangzhou.subject.SubjectType;
+import com.edu.basicaccountingforguangzhou.subject.TestMode;
 import com.edu.basicaccountingforguangzhou.subject.bill.template.BillTemplate;
 import com.edu.basicaccountingforguangzhou.subject.bill.template.BillTemplateFactory;
+import com.edu.basicaccountingforguangzhou.subject.data.TestGroupBillData;
+import com.edu.basicaccountingforguangzhou.testbill.data.SubjectTestDataDao;
 import com.edu.library.data.DBHelper;
 import com.edu.library.util.ToastUtil;
 
@@ -43,23 +48,18 @@ public class TestDataDao extends BaseDataDao {
 	// 具体解释查看数据库设计文档
 	public static final String SEND_STATE = "SEND_STATE";
 	public static final String ERROR_COUNT = "ERROR_COUNT";
-	
+
 	// 题目视图
 	private ISubject subjectView;
-	
-	
-	// 用户答案
-		public static final String UANSWER = "UANSWER";
-		// 用户印章-单据题
-		public static final String USIGNS = "USIGNS";
-		// 用户得分
-		public static final String USCORE = "USCORE";
-		
-		TestData testData = null;
-		BaseSubjectData subjectData = null;
-		 
-	
 
+	// 用户答案
+	public static final String UANSWER = "UANSWER";
+	// 用户印章-单据题
+	public static final String USIGNS = "USIGNS";
+	// 用户得分
+	public static final String USCORE = "USCORE";
+
+	BaseSubjectData subjectData = null;
 
 	/**
 	 * 自身引用
@@ -128,7 +128,6 @@ public class TestDataDao extends BaseDataDao {
 				curs.moveToLast();
 				returnValue = new TestData();
 
-
 				// Log.d(TAG, "data:" + data);
 			}
 
@@ -172,13 +171,15 @@ public class TestDataDao extends BaseDataDao {
 	public List<TestData> getDatas(int chapterId, int type) {
 		Cursor curs = null;
 		List<TestData> datas = null;
+		TestData testData = null;
+
 		try {
 			DBHelper helper = new DBHelper(mContext, Constant.DATABASE_NAME, null);
 			mDb = helper.getWritableDatabase();
 			String sql = "SELECT * FROM " + TABLE_NAME + " WHERE TYPE = " + type + " AND CHAPTER_ID = " + chapterId;
 			Log.d(TAG, "sql:" + sql);
 			curs = mDb.rawQuery(sql, null);
-			
+
 			if (curs != null) {
 				datas = new ArrayList<TestData>(curs.getCount());
 				index = 1;
@@ -187,15 +188,16 @@ public class TestDataDao extends BaseDataDao {
 				int indexJuge = 1;
 				int indexChild = 0;
 				boolean isChild = false;
-			
+
 				while (curs.moveToNext()) {
-					int  subjectType = curs.getInt(curs.getColumnIndex(SUBJECT_TYPE));
-				TestData data = parseCursor(curs);
+					int subjectType = curs.getInt(curs.getColumnIndex(SUBJECT_TYPE));
+					TestData data = parseCursor(curs);
+					Log.e("wwwww", "多页传票 dataid" + data.getSubjectId() + "---" + subjectType);
+
 					if (!isChild) {
 						datas.add(data);
 					}
-					if (subjectType == Constant.SUBJECT_TYPE_SINGLE_SELECT || subjectType == Constant.SUBJECT_TYPE_MULTI_SELECT
-							|| subjectType == Constant.SUBJECT_TYPE_JUDGE) {
+					if (subjectType == Constant.SUBJECT_TYPE_SINGLE_SELECT || subjectType == Constant.SUBJECT_TYPE_MULTI_SELECT || subjectType == Constant.SUBJECT_TYPE_JUDGE) {
 						isChild = false;
 						SubjectBasicData basicData = (SubjectBasicData) SubjectBasicDataDao.getInstance(mContext).getDataById(Integer.valueOf(data.getSubjectId()));
 						data.setTitle(basicData.getQuestion());
@@ -207,6 +209,7 @@ public class TestDataDao extends BaseDataDao {
 						} else {
 							basicData.setIndexName((indexJuge++) + "");
 						}
+						basicData.setRight(data.getState() == 1 ? true : false);
 						data.setData(basicData);
 					} else if (subjectType == Constant.SUBJECT_TYPE_ENTRY) {
 						isChild = false;
@@ -230,93 +233,135 @@ public class TestDataDao extends BaseDataDao {
 
 						isChild = false;
 						indexChild++;
-//						SubjectBillData billData = (SubjectBillData) SubjectBillDataDao.getInstance(mContext).getDataById(Integer.valueOf(data.getSubjectId()));	
 						// 初始化测试数据
 						testData = new TestBillData();
-
+						int id = curs.getInt(curs.getColumnIndex(SUBJECT_ID));
+						testData = SubjectTestDataDao.getInstance(mContext).getBillTestData(testData, id);
+						testData.setTestMode(2);
+						// testData = SubjectBillDataDao.getInstance(mContext,
+						// Constant.DATABASE_NAME)
+						// parseCursor( testData);
 						// 初始化题目数据
-//						subjectData = (SubjectBillData) SubjectBillDataDao.getInstance(mContext, Constant.DATABASE_NAME).getDataById(testData.getSubjectId());
 						subjectData = (SubjectBillData) SubjectBillDataDao.getInstance(mContext, Constant.DATABASE_NAME).getDataById(Integer.valueOf(data.getSubjectId()));
-						Log.e(TAG, "当前数据库名字" + TABLE_NAME);
-
-						Log.e(TAG, "执行顺序流1");
-
-					//	parseCursor(curs, testData);
-
-
-						testData.setSubjectData(subjectData);		
-						Log.e(TAG, "执行顺序流2");
-						
-						Log.e(TAG, "执行顺序流2getTemplateId" + ((SubjectBillData) subjectData).getTemplateId());
-
-						
+						// subjectData.getErrorCount();
+						((TestBillData) testData).setSubjectData(subjectData);
 						// 初始化模板数据
 						BillTemplate template = BillTemplateFactory.createTemplate(mDb, ((SubjectBillData) subjectData).getTemplateId(), mContext);
-//						subjectView.applyData(mData);
-//						prepared = true;
-						Log.e(TAG, "执行顺序流2-2");
-
-					((TestBillData) testData).setTemplate(template);
-					Log.e(TAG, "执行顺序流2-3");
-
-						String result = ((TestBillData) testData).loadTemplate();
-						Log.e(TAG, "执行顺序流3");
-
-						if (0!= 2) {
-							Log.e(TAG, "执行顺序流4");
-
+						((TestBillData) testData).setTemplate(template);
+						String result = ((TestBillData) testData).loadTemplate(mContext);
+						// Log.e("TestBillData", "获取billData----TestBill中" +
+						// testData + data.getSubjectId());
+						if (0 != 2) {
 							data.setTitle(subjectData.getQuestion());
 							subjectData.setSubjectIndex(index++);
 							subjectData.setIndexName(indexChild + "");
-							Log.e(TAG, "执行顺序流5");
+							((TestBillData) testData).setSubjectData((SubjectBillData) subjectData);
+							// Log.e("wwwwwwww", "错题次数testData" +
+							// subjectData.getErrorCount()+ "----" +
+							// data.getId());
+							// testData.setSubjectData(subjectData);
+							// Log.e("wwwwwwww", "错题次数testData" +
+							// ((SubjectBillData)testData.getSubjectData()).getERROR_COUNT()
+							// + "----" + data.getId());
+							isChild = false;
+							data.setBillData((TestBillData) testData);
+							// Log.e("wwwwwwww", "错题次数" +
+							// data.getBillData().getSubjectData().getERROR_COUNT()
+							// + "----" + data.getId());
+						}
+						// Log.e("TestBillData", "初始化模板数据1" + TAG);
 
-							Log.e(TAG, "setIndexName" + indexChild + "" + "id是" + subjectData.getId());
+						// String result = ((TestBillData)
+						// testData.getBillData()).loadTemplate(mContext);
+						// Log.e("TestBillData", "初始化模板数据2" + TAG);
+						// if (result.equals("success")) {
+						// Log.d(TAG, "load data success:" + testData);
+						// } else {
+						// Log.e(TAG, "load data error:" + result);
+						// ToastUtil.showToast(mContext, result);
+						// }
+					} else if (subjectType == SubjectType.SUBJECT_GROUP_BILL) {
+						isChild = false;
+						indexChild++;
+						int id = curs.getInt(curs.getColumnIndex(SUBJECT_ID));
+						// 初始化测试数据
+						testData = new TestGroupBillData();
+						testData.setTestMode(2);
+						testData = SubjectTestDataDao.getInstance(mContext).getGroupBillSubjectData(testData, -1, id);
+					//	testData = parseCursor(curs, testData, -1);
+						// 初始化题目数据,分组单据存在多张单据题目
+						List<SubjectBillData> bills = (List<SubjectBillData>) SubjectBillDataDao.getInstance(mContext, Constant.DATABASE_NAME).getDatas(Integer.valueOf(data.getSubjectId()), mDb);
+						List<TestBillData> testBills = new ArrayList<TestBillData>(bills.size());
+						((TestGroupBillData) testData).setTestDatas(testBills);
+						for (int i = 0; i < bills.size(); i++) {
+							SubjectBillData bill = bills.get(i);
+							TestBillData testBill = new TestBillData();
+							testBill.setTestMode(2);
+							testBills.add(testBill);
+							testBill = (TestBillData) SubjectTestDataDao.getInstance(mContext).getGroupBillSubjectData(testData, i, id);
+							//testBill = (TestBillData) parseCursor(curs, testBill, i);
+							testBill.setSubjectData(bill);
+							// 初始化模板数据
+							BillTemplate template = BillTemplateFactory.createTemplate(mDb, ((SubjectBillData) bill).getTemplateId(), mContext);
+							testBill.setTemplate(template);
+							String result = testBill.loadTemplate(mContext);
+							((TestGroupBillData) testData).setIndexNum(index++);
+							((TestGroupBillData) testData).setIndexName(indexChild + "");
+
 							isChild = false;
 
-							Log.e(TAG, "执行顺序流6");
-
-							data.setBillData((TestBillData) testData);
-
-						} else {
-							data.setTitle(subjectData.getQuestion());
-							subjectData.setSubjectIndex(index++);
-							subjectData.setIndexName((indexChild) + "_1");
-							data.setBillData((TestBillData) testData);
-//							datas.addAll(setData(subjectData.getChildren(), indexChild));
-							isChild = false;
+							if (result.equals("success")) {
+								Log.d(TAG, "load data success:" + testData);
+							} else {
+								Log.e(TAG, "load data error:" + result);
+								ToastUtil.showToast(mContext, result);
+							}
 						}
-				
-						if (result.equals("success")) {
-							Log.d(TAG, "load data success:" + testData);
-						} else {
-							Log.e(TAG, "load data error:" + result);
-							ToastUtil.showToast(mContext, result);
-						}
+						Log.e("wwwww", "多页传票" + data.getSubjectId());
+						data.setTestGroupBillData((TestGroupBillData) testData);
 					}
 				}
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
+		}
+		// catch (Exception e) {
+		// Log.e("TestBillData", "这是什么错误" + e.toString());
+		//
+		// e.printStackTrace();
+		// }
+		finally {
 			closeDb(mDb, curs);
 		}
 		return datas;
 	}
-	public void parseCursor(Cursor curs, TestData data) {
-		data.setId(curs.getInt(0));
-		data.setFlag(curs.getInt(1));
-		data.setSubjectType(curs.getInt(2));
-		data.setSubjectId("" + curs.getInt(3));
-		data.setuAnswer(curs.getString(4));
-		data.setuScore(curs.getInt(6));
-		data.setState(curs.getInt(7));
-		data.setRemark(curs.getString(8));
-		if (data.getSubjectType() == SubjectType.SUBJECT_BILL) {
-			((TestBillData) data).setuSigns(curs.getString(5));
-		}
-	}
+
+	/**
+	 * cursor解析,用于多组单据
+	 * 
+	 * @param curs
+	 * @param data
+	 * @param index
+	 */
+
+
+	// public void parseCursor(Cursor curs, TestData data) {
+	//
+	//
+	// data.setId(curs.getInt(0));
+	// data.setFlag(curs.getInt(1));
+	// data.setSubjectType(curs.getInt(2));
+	// data.setSubjectId("" + curs.getInt(3));
+	// data.setuAnswer(curs.getString(4));
+	// data.setuScore(curs.getInt(6));
+	// if (testMode == TestMode.MODE_EXAM) {// 测试模式不加载用户数据
+	// data.setState(curs.getInt(SubjectState.STATE_INIT));
+	// }
+	//
+	// data.setRemark(curs.getString(8));
+	// if (data.getSubjectType() == SubjectType.SUBJECT_BILL) {
+	// ((TestBillData) data).setuSigns(curs.getString(5));
+	// }}
 
 	/**
 	 * 解析具有子类的题
@@ -338,7 +383,7 @@ public class TestDataDao extends BaseDataDao {
 				SubjectBillData billData = (SubjectBillData) SubjectBillDataDao.getInstance(mContext, Constant.DATABASE_NAME).getDataById(Integer.valueOf(child[1]));
 
 				data.add(setChildrenBillData(billData, (indexName + "-" + (i + 2))));
-			
+
 			}
 		}
 		return data;
@@ -739,7 +784,5 @@ public class TestDataDao extends BaseDataDao {
 			closeDb(mDb, curs);
 		}
 	}
-
-
 
 }

@@ -8,6 +8,7 @@ import com.edu.basicaccountingforguangzhou.subject.data.SignData;
 import com.edu.basicaccountingforguangzhou.subject.util.BitmapParseUtil;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,9 +66,11 @@ public class SignsAdapter extends BaseAdapter {
 		}
 
 		ImageView sign = (ImageView) view.findViewById(R.id.iv_sign);
-		sign.setImageBitmap(BitmapParseUtil.parse(mList.get(position).getPic(), mContext));
+		sign.setImageBitmap(BitmapParseUtil.parse(mList.get(position).getPic(), mContext, true));
 		TextView signContent = (TextView) view.findViewById(R.id.tv_sign_content);
 		signContent.setText(mList.get(position).getName());
+		Log.e("查看sgin专用", " SignsAdapter." + mList.get(position).getId());
+
 		view.setTag(mList.get(position));
 
 		return view;

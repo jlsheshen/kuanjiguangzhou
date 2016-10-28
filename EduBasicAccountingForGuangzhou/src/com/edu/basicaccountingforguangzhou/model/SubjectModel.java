@@ -94,6 +94,8 @@ public class SubjectModel {
 	 */
 	public void updateUserAnswer(int id, String userAnswer) {
 		ContentValues values = new ContentValues();
+		
+		Log.e("得分专用Log", "answer输入数据库前" + userAnswer);
 		values.put(SubjectBasicDataDao.UANSWER, userAnswer);
 		SubjectBasicDataDao.getInstance(mContext).updateData(id, values);
 	}

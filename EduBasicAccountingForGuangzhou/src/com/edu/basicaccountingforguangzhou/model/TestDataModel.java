@@ -54,6 +54,7 @@ public class TestDataModel {
 	public List<TestData> getDatas(int chapterId, int type) {
 		return TestDataDao.getInstance(mContext).getDatas(chapterId, type);
 	}
+	
 
 	/**
 	 * 更新某个题的状态和发送状态

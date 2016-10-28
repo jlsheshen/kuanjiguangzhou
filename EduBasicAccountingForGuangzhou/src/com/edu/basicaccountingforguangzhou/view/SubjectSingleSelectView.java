@@ -150,8 +150,10 @@ public class SubjectSingleSelectView extends BaseScrollView implements OnClickLi
 		Log.d(TAG, "userAnswer:" + userAnswer + "," + userAnswer.equals(""));
 		int state = mTestData.getState();// 答题状态 0未答，1/2正误，3未完成
 		int sendState = mTestData.getSendState();// 发送状态 1已发送，0未发送
+		Log.e(TAG, "showCorrectAnswer:" + mData.isRight() + "," + mData.getId() + "---" + testMode);
 
 		if (testMode == TEST_MODE_NORMAL) {
+
 			if (state == 1 || state == 2) {// 已完成 // 用户选择答案后显示正确答案，且不能进行修改
 				showCorrectAnswer(mData.isRight());
 				tvSubjectType.setVisibility(View.GONE);
@@ -279,7 +281,7 @@ public class SubjectSingleSelectView extends BaseScrollView implements OnClickLi
 	//
 	// /**
 	// * 更新正确答案的显示状态以及用户的选择状态，普通模式下选择后就显示正确答案，乡试模式查看详细的时候显示正确答案
-	// */
+	// */  
 	// private void refreshAnswerState(SubjectBasicData data) {
 	// String userAnswer = mData.getUserAnswer();
 	// Log.d(TAG, "userAnswer:" + userAnswer + "," + userAnswer.equals(""));

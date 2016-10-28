@@ -26,7 +26,7 @@ public class BillTemplateFactory {
 	 * @return
 	 */
 	public static BillTemplate createTemplate(SQLiteDatabase db, int templateId, Context context) {
-		if (TEMPLATE_CACHE.get(templateId) != null) {
+		if (TEMPLATE_CACHE.get(templateId) != null&& TEMPLATE_CACHE.get(templateId).get() != null) {
 			Log.d(TAG, "template:" + templateId + " exists");
 			return TEMPLATE_CACHE.get(templateId).get();
 		}

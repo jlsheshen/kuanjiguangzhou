@@ -6,6 +6,9 @@ import java.util.List;
 import com.edu.basicaccountingforguangzhou.data.TestBillData;
 import com.edu.basicaccountingforguangzhou.data.TestData;
 import com.edu.basicaccountingforguangzhou.subject.ISubject;
+import com.edu.basicaccountingforguangzhou.subject.SubjectListener;
+import com.edu.basicaccountingforguangzhou.subject.bill.BatchOperateHelper;
+import com.edu.basicaccountingforguangzhou.subject.bill.BillAnswerHandler;
 import com.edu.basicaccountingforguangzhou.subject.bill.DragState;
 import com.edu.basicaccountingforguangzhou.subject.bill.FocusHandler;
 import com.edu.basicaccountingforguangzhou.subject.bill.element.ElementLayoutParams;
@@ -21,9 +24,10 @@ import com.edu.basicaccountingforguangzhou.subject.bill.view.BackgroudView;
 import com.edu.basicaccountingforguangzhou.subject.bill.view.BlankEditText;
 import com.edu.basicaccountingforguangzhou.subject.bill.view.FlashView;
 import com.edu.basicaccountingforguangzhou.subject.bill.view.SignView;
-import com.edu.basicaccountingforguangzhou.subject.bill.view.TranslucentView;
 import com.edu.basicaccountingforguangzhou.subject.bill.view.SignView.DragListener;
-import com.edu.basicaccountingforguangzhou.subject.util.BillAnswerUtil;
+import com.edu.basicaccountingforguangzhou.subject.bill.view.TranslucentView;
+import com.edu.basicaccountingforguangzhou.subject.dao.TemplateDataDao;
+import com.edu.basicaccountingforguangzhou.subject.util.BitmapParseUtil;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -35,11 +39,9 @@ import android.util.Log;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Scroller;
-
 
 
 /**
@@ -49,10 +51,9 @@ import android.widget.Scroller;
  * 
  */
 @SuppressLint("ClickableViewAccessibility")
-public class ZoomableBillView extends ViewGroup implements OnTouchListener, DragListener, ISubject, OnFocusChangeListener {
+public class ZoomableBillView extends ViewGroup implements OnTouchListener, DragListener, ISubject {
 
-//	private static final String TAG = ZoomableBillView.class.getSimpleName();
-	private static final String TAG = "wwwwwwwwwwwwwww";
+	private static final String TAG = ZoomableBillView.class.getSimpleName();
 
 	// 支持的最大缩放倍数
 	public static int MAX_SCALE_TIMES = 2;
@@ -115,9 +116,15 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 	private TranslucentView mTransView;
 	// 盖章监听
 	private SignViewListener mSignListener;
+	//答题模式
+	private int testMode;
 
 	// 焦点处理事件
 	private FocusHandler mFocusHandler;
+	// 答案处理类
+	private BillAnswerHandler mAnswerHandler;
+	// 批量处理帮助类
+	private BatchOperateHelper mBatchOpeHelper;
 
 	public ZoomableBillView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -143,8 +150,9 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 		setFocusableInTouchMode(true);
 		setFocusable(true);
 		// 初始化焦点事件处理类
-		mFocusHandler = new FocusHandler(mContext);
-		setOnKeyListener(mFocusHandler);
+		mFocusHandler = new FocusHandler(mContext, this);
+		mAnswerHandler = new BillAnswerHandler();
+		mBatchOpeHelper = new BatchOperateHelper();
 	}
 
 	/**
@@ -153,11 +161,11 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 	 * @param template
 	 */
 	private void setBillTempate(BillTemplate template) {
-		Log.e(TAG, "获取template  155");
-
 		mTemplate = template;
 		// 初始化底图
-		mBitmap = mTemplate.getBitmap();
+		mBitmap = BitmapParseUtil.parse(mTemplate.getBitmap(), mContext, true);
+
+		//mBitmap = BitmapParseUtil.parse(mTemplate.getBitmap(), mContext);
 		if (mBitmap == null) {
 			Log.e(TAG, "底图为空，无法继续");
 			return;
@@ -180,27 +188,26 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 		// 初始化背景图
 		mBackgroud.postScale(mScale, mCurrentScaleTimes);
 		// 初始化所有空
-		Log.e(TAG, "方法template  183");
-
 		List<BaseElementInfo> elements = mTemplate.getElementDatas();
 		if (elements != null) {
 			for (BaseElementInfo element : elements) {
 				if (element instanceof BlankInfo) {
-					BlankEditText etBlank = new BlankEditText(mContext, mBillData.getTestMode(), mBillData.getState());
+					BlankEditText etBlank = new BlankEditText(mContext, testMode, mBillData.getState());
 					etBlank.apply((BlankInfo) element, mScale, mScaleWeight);
 					addView(etBlank);
 					mEtBlanks.add(etBlank);
+					//Log.e("TestBillData", "用户数据内荣初始化1" + etBlank.getData().getuAnswer());
+
 					mFocusHandler.add(etBlank);
-					etBlank.setOnFocusChangeListener(this);
+					mAnswerHandler.addBlank(etBlank);
 				} else if (element instanceof SignInfo) {
-					SignView signView = new SignView(mContext);
-					if (signView.apply((SignInfo) element, mScale)) {
-						addView(signView);
-						signView.setVisibility(View.GONE);
-						mSignViews.add(signView);
-					} else {
-						Log.e(TAG, "印章图片为空，将被忽略:" + element);
-					}
+					SignView signView = new SignView(mContext,testMode, mBillData.getState());
+
+		//			SignView signView = new SignView(mContext, testMode);
+					signView.setVisibility(View.GONE);
+					signView.apply((SignInfo) element, mScale);
+					addView(signView);
+					mSignViews.add(signView);
 				} else if (element instanceof FlashInfo) {
 					// 根据后期逻辑判断是否需要显示出闪电符
 					FlashView flashView = new FlashView(mContext);
@@ -210,6 +217,24 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 					mFlashViews.add(flashView);
 				}
 			}
+			// 初始化用户印章
+			String uSigns = mBillData.getuSigns();
+			if (uSigns != null && !uSigns.equals("")) {
+				List<SignInfo> signs =  TemplateDataDao.getInstance(mContext).loadUserSigns(uSigns);
+				for(SignInfo sign:signs) {
+					//SignView signView = new SignView(mContext, testMode);
+					SignView signView = new SignView(mContext, testMode, mBillData.getState());
+
+					signView.setVisibility(View.GONE);
+					signView.apply(sign, mScale);
+					addView(signView);
+					mSignViews.add(signView);
+				}
+			}
+
+			mAnswerHandler.setSignViews(mSignViews);
+			mBatchOpeHelper.setElements(mEtBlanks, mSignViews, mFlashViews);
+
 		}
 	}
 
@@ -220,43 +245,46 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 	 * @return 返回是否可添加
 	 */
 	public boolean addSignView(SignInfo signData) {
+		Log.e("查看sgin专用","addSignView"  +  signData.getId());
+
 		if (mDraggingSignView != null) {
-			Log.d(TAG, "先把当前印章盖完才能继续盖别的印章：" + signData);
 			if (mSignListener != null) {
 				mSignListener.onDragHint(mDraggingSignView, "先把当前印章盖完才能继续盖别的印章");
+
 			}
 			return false;
 		}
+
 		mDragState = DragState.WAITING;
+		// 盖章时缩放到原始大小
 		zoomToInit();
-		// 初始化半透明视图，目前提供给盖章用
+		setTransBackgroud();
+		// 加入待盖的印章
+		mDraggingSignView = new SignView(mContext, testMode, mBillData.getState());
+
+	//	mDraggingSignView = new SignView(mContext, testMode);
+		mDraggingSignView.setAsDragView(this, signData, mWidth, mHeight, mInitScale, Math.abs(getScrollBorder()[1]));
+		if (mDraggingSignView.apply(signData, mScale)) {
+			addView(mDraggingSignView);
+			return true;
+		} else {
+			if (mSignListener != null) {
+				mSignListener.onDragHint(mDraggingSignView, "印章图片为空，无法添加:");
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 初始化半透明视图，目前提供给盖章用
+	 */
+	private void setTransBackgroud() {
 		mTransView = new TranslucentView(mContext, mBackgroud.getWidth(), mBackgroud.getHeight());
 		mTransView.setSignListener(mSignListener);
 		mTransView.setSignView(mDraggingSignView);
 		// 置顶
 		removeView(mTransView);
 		addView(mTransView);
-		// 加入待盖的印章
-		mDraggingSignView = new SignView(mContext);
-		mDraggingSignView.setOnDragListener(this);
-		mDraggingSignView.setWaitingState();
-		mDraggingSignView.setOnTouchListener(this);
-		// 居中显示
-		float x = (mWidth - signData.getWidth()) / 2 / mInitScale;
-		float y = (mHeight - signData.getHeight()) / 2 / mInitScale + Math.abs(getScrollBorder()[1]) / mInitScale;
-		signData.setX(x);
-		signData.setY(y);
-		signData.setUser(true);
-		if (mDraggingSignView.apply(signData, mScale)) {
-			addView(mDraggingSignView);
-			return true;
-		} else {
-			Log.e(TAG, "印章图片为空，无法添加:" + signData);
-			if (mSignListener != null) {
-				mSignListener.onDragHint(mDraggingSignView, "印章图片为空，无法添加:");
-			}
-			return false;
-		}
 	}
 
 	/**
@@ -346,27 +374,15 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 			} else {
 				mZoomListener.onZoomOutStart(mCurrentScaleTimes);
 			}
-
 		}
-
 		refreshZoomState();
 		// 底图缩放
 		mBackgroud.postScale(mScale, mCurrentScaleTimes);
-		// 空缩放
-		for (BlankEditText etBlank : mEtBlanks) {
-			etBlank.postScale(mScale, mCurrentScaleTimes);
-		}
 		// 印章缩放
 		if (mDraggingSignView != null) {
 			mDraggingSignView.postScale(mScale, mCurrentScaleTimes);
 		}
-		for (SignView signView : mSignViews) {
-			signView.postScale(mScale, mCurrentScaleTimes);
-		}
-		// 闪电符缩放
-		for (FlashView flashView : mFlashViews) {
-			flashView.postScale(mScale, mCurrentScaleTimes);
-		}
+		mBatchOpeHelper.zoom(mScale, mCurrentScaleTimes);
 		requestLayout();
 		checkScrollBorder(false);
 
@@ -496,9 +512,14 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 		mDraggingSignView.setOnTouchListener(null);
 		mDragState = DragState.DONE;
 		// 添加印章到视图里
-		SignView signView = new SignView(mContext);
+		//SignView signView = new SignView(mContext, testMode);
+		SignView signView = new SignView(mContext, testMode, mBillData.getState());
+
 		signView.setOnDragListener(this);
+		signView.loadBitmap(mDraggingSignView.getData().getBitmap());
+		
 		if (signView.apply(mDraggingSignView.getData(), mScale)) {
+			// signView.showAnswer(true);
 			addView(signView);
 			mSignViews.add(signView);
 			signView.animateShow(this);
@@ -598,7 +619,6 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 		}
 
 		mDraggingSignView.move(dx, dy, mScale);
-
 	}
 
 	@Override
@@ -645,9 +665,6 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 			} else {
 				scrollBy(dx, dy);
 			}
-
-			// Log.d(TAG, "checkBorder dx:" + dx + ",dy:" + dy + ",scrollX:" +
-			// getScrollX() + ",scrollY:" + getScrollY());
 		}
 
 	}
@@ -711,13 +728,11 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 			}
 			return true;
 		}
-	}
 
-	@Override
-	public void onFocusChange(View v, boolean hasFocus) {
-		// 处理空获取焦点后，如果显示不全，自动滚动单据的操作
-		if (hasFocus) {
-			scrollToWrapBlank(v);
+		@Override
+		public boolean onSingleTapConfirmed(MotionEvent e) {
+			mFocusHandler.handleSingleTab(e, getScrollBorder());
+			return true;
 		}
 	}
 
@@ -727,7 +742,7 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 	 * @param view
 	 *            当前空视图
 	 */
-	private void scrollToWrapBlank(View view) {
+	public void scrollToWrapBlank(View view) {
 		if (view == null || !(view instanceof BlankEditText))
 			return;
 		// 获取当前空在屏幕的位置
@@ -783,17 +798,18 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 	}
 
 	@Override
-	public void applyData(TestData data) {
-		Log.e(TAG, "data是否为空784"   );
-		Log.e(TAG, "data是否为空" + data.getSubjectId());
-		mBillData=  (TestBillData) data.getBillData();
-		
+	public void applyData(TestData data,int testMode) {
+		this.testMode = testMode;
+		mBillData = (TestBillData) data;
+		mAnswerHandler.setTestData(mBillData);
 		setBillTempate(mBillData.getTemplate());
 	}
 
 	@Override
 	public float submit() {
-		BillAnswerUtil.submit(mBillData, mEtBlanks, mSignViews);
+		mAnswerHandler.submit();
+		Log.e(TAG, "totalscore44444:" + mBillData.getuScore() );
+
 		return mBillData.getuScore();
 	}
 
@@ -803,13 +819,17 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 			etBlank.saveAnswer();
 		}
 		for (SignView signView : mSignViews) {
+			signView.saveAnswer();
 		}
+		
 	}
 
 	/**
 	 * 显示用户答案
 	 */
 	public void showUserAnswer() {
+		Log.e("TestBillData", "数据模板中进行" + TAG);
+
 		switchAnswer(true);
 	}
 
@@ -824,17 +844,42 @@ public class ZoomableBillView extends ViewGroup implements OnTouchListener, Drag
 	 * @param user
 	 */
 	private void switchAnswer(boolean user) {
-		for (BlankEditText etBlank : mEtBlanks) {
-			etBlank.showAnswer(user);
-		}
-		for (SignView signView : mSignViews) {
-			signView.showAnswer(user);
-		}
+		mBatchOpeHelper.switchAnswer(user);
 	}
+//	private void switchAnswer(boolean user) {
+//		for (BlankEditText etBlank : mEtBlanks) {
+//			Log.e("TestBillData", "用户数据内荣初始化2" + etBlank.getData().getuAnswer());
+//
+//			etBlank.showAnswer(user);
+//		}
+//		for (SignView signView : mSignViews) {
+//			Log.e("TestBillData", "用户数据印章初始化" + signView.getData().getX() );
+//
+//			signView.showAnswer(user);
+//		}
+//	}
 
 	@Override
 	public void reset() {
-
+		mBatchOpeHelper.reset(this);
+		requestDefaultFocus();
 	}
 
+	/**
+	 * 设置填制完毕监听
+	 * 
+	 * @param listener
+	 */
+	@Override
+	public void setSubjectListener(SubjectListener listener) {
+		mFocusHandler.setSubjectListener(listener);
+	}
+
+
+	/**
+	 * 获取默认焦点
+	 */
+	public void requestDefaultFocus() {
+		mFocusHandler.requestDefaultFocus();
+	}
 }

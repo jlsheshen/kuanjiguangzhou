@@ -1,12 +1,18 @@
 package com.edu.basicaccountingforguangzhou.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.edu.basicaccountingforguangzhou.subject.SubjectConstant;
 import com.edu.basicaccountingforguangzhou.subject.SubjectType;
+import com.edu.library.util.ToastUtil;
+
 
 /**
  * 单据题型数据操作dao
@@ -62,8 +68,8 @@ public class SubjectBillDataDao extends BaseDataDao {
 		}
 
 		return data;
-
 	}
+	
 
 	@Override
 	public SubjectBillData parseCursor(Cursor curs) {
@@ -82,8 +88,79 @@ public class SubjectBillDataDao extends BaseDataDao {
 		subjectData.setFavorite(curs.getInt(10));
 		subjectData.setRemark(curs.getString(11));
 		subjectData.setSubjectType(SubjectType.SUBJECT_BILL);
+//		Log.e("得分专用Log", "获取得分5" + subjectData.getScore());
 
 		return subjectData;
+	}
+	/**
+	 * 获取题目数据，用于分组单据
+	 * 
+	 * @param subjectId
+	 * @param mDb
+	 * @return
+	 */
+	public List<SubjectBillData> getDatas(int id, SQLiteDatabase db) {
+		List<SubjectBillData> datas = null;
+		Cursor curs = null;
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID = " + id;
+		try {
+			curs = db.rawQuery(sql, null);
+			if (curs != null) {
+				if (curs.getCount() == 0)
+					return null;
+				curs.moveToFirst();
+				datas = parseCursors(curs);
+
+				Log.d(TAG, "data:" + datas);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		return datas;
+
+	}
+	
+	/**
+	 * 解析cursor
+	 * 
+	 * @param curs
+	 * @return
+	 */
+	public List<SubjectBillData> parseCursors(Cursor curs) {
+		int id = curs.getInt(0);
+		// 对多组单据的处理
+		String[] templateIds = curs.getString(3).split(SubjectConstant.SEPARATOR_GROUP);
+		String[] labels = curs.getString(6).split(SubjectConstant.SEPARATOR_GROUP);
+		String[] answers = curs.getString(7).split(SubjectConstant.SEPARATOR_GROUP);
+		int size = templateIds.length;
+		if (size <= 1 || labels.length != size || answers.length != size) {
+			ToastUtil.showToast(mContext, "多组单据题目数据不合法：" + id);
+			return null;
+		}
+
+		List<SubjectBillData> subjectDatas = new ArrayList<SubjectBillData>(size);
+		for (int i = 0; i < size; i++) {
+			SubjectBillData subjectData = new SubjectBillData();
+			subjectData.setId(id);
+			subjectData.setChapterId(curs.getInt(1));
+			subjectData.setFlag(curs.getInt(2));
+			subjectData.setQuestion(curs.getString(4));
+			subjectData.setPic(curs.getString(5));
+			subjectData.setScore(curs.getInt(8));
+			subjectData.setErrorCount(curs.getInt(9));
+			subjectData.setFavorite(curs.getInt(10));
+			subjectData.setRemark(curs.getString(11));
+			subjectData.setSubjectType(SubjectType.SUBJECT_BILL);
+
+			subjectData.setLabels(labels[i]);
+			subjectData.setAnswer(answers[i]);
+			subjectData.setTemplateId(Integer.parseInt(templateIds[i]));
+
+			subjectDatas.add(subjectData);
+		}
+
+		return subjectDatas;
 	}
 	
 	

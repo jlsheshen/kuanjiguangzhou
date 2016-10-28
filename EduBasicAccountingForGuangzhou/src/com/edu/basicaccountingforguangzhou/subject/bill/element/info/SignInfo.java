@@ -1,9 +1,8 @@
 package com.edu.basicaccountingforguangzhou.subject.bill.element.info;
 
+
 import com.edu.basicaccountingforguangzhou.subject.bill.element.ElementType;
 
-import android.graphics.Bitmap;
-import android.util.Log;
 
 /**
  * 对应印章的数据
@@ -16,7 +15,7 @@ public class SignInfo extends BaseElementInfo {
 	// 是否为用户印章
 	private boolean user;
 	// 印章图片
-	private Bitmap bitmap;
+	private String bitmap;
 
 	public SignInfo() {
 
@@ -34,23 +33,12 @@ public class SignInfo extends BaseElementInfo {
 		super(x, y, 0, 0, ElementType.TYPE_SIGN);
 	}
 
-	public Bitmap getBitmap() {
+	public String getBitmap() {
 		return bitmap;
 	}
 
-	public void setBitmap(Bitmap bitmap) {
+	public void setBitmap(String bitmap) {
 		this.bitmap = bitmap;
-		Log.e("wwwwwwww", "执行setBitmap流1");
-	
-		Log.e("wwwwwwww", "执行setBitmap流1" + bitmap.getWidth());
-
-
-		setWidth(bitmap.getWidth());	
-		Log.e("wwwwwwww", "执行setBitmap流2");
-
-		setHeight(bitmap.getHeight());
-		Log.e("wwwwwwww", "执行setBitmap流3");
-
 	}
 
 	public boolean isUser() {

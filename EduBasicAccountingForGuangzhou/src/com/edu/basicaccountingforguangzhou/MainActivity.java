@@ -19,6 +19,7 @@ import com.edu.library.util.ToastUtil;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -57,6 +58,7 @@ public class MainActivity extends EduBaseActivity implements OnClickListener {
 		Bundle bundle = this.getIntent().getExtras();
 		if (bundle != null) {
 			lastTextId = bundle.getInt("textId");
+	//	Log.e("MainActivity", "textId" + lastTextId);
 			currentIndex = bundle.getInt("index");
 		}
 

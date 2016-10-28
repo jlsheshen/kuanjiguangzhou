@@ -119,7 +119,7 @@ public class CardViewForPractice {
 				}
 			} else if (i == 4) {
 				for (int j = 0; j < datas.size(); j++) {
-					if (datas.get(j).getSubjectType() == Constant.SUBJECT_TYPE_ENTRY || datas.get(j).getSubjectType() == Constant.SUBJECT_TYPE_BILL) {
+					if (datas.get(j).getSubjectType() == Constant.SUBJECT_TYPE_ENTRY || datas.get(j).getSubjectType() == Constant.SUBJECT_TYPE_BILL||datas.get(j).getSubjectType() == Constant.SUBJECT_GROUP_BILL) {
 						dataClass.add(datas.get(j));
 						tvTilte.setText("【" + strStem[i] + "】");
 					}

@@ -1,5 +1,6 @@
 package com.edu.basicaccountingforguangzhou.subject.util;
 
+import java.io.FileInputStream;
 import java.lang.ref.SoftReference;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,27 +38,44 @@ public class BitmapParseUtil {
 	 * @param uri
 	 * @param context
 	 *            assets资源需要
+	 * @param cache
+	 *            是否缓存
 	 * @return
 	 */
-	public static Bitmap parse(String uri, Context context) {
+	public static Bitmap parse(String uri, Context context, boolean cache) {
 		Log.d(TAG, "parsing...uri:" + uri);
-		Log.e("wwwwwwww", "执行setBitmap流0.2过来了,parse");
-
 		Bitmap bitmap = null;
-		// 从缓存获取，若存在直接使用，否则根据uri进行初始化
-		if (CACHE.get(uri) == null || CACHE.get(uri).get() == null || CACHE.get(uri).get().isRecycled()) {
-			Log.e(TAG, "uri:" + uri + "缓存不存在，需要初始化bitmap流");
-			// BitmapFactory.Options opt = new BitmapFactory.Options();
-			// opt.inJustDecodeBounds = true;
 
-			bitmap = createBitmap(uri, context);
-			CACHE.put(uri, new SoftReference<Bitmap>(bitmap));
+		if (cache) {
+			// 从缓存获取，若存在直接使用，否则根据uri进行初始化
+			if (CACHE.get(uri) == null || CACHE.get(uri).get() == null || CACHE.get(uri).get().isRecycled()) {
+				Log.e(TAG, "uri:" + uri + "缓存不存在，需要初始化bitmap");
+				// BitmapFactory.Options opt = new BitmapFactory.Options();
+				// opt.inJustDecodeBounds = true;
+
+				bitmap = createBitmap(uri, context);
+				CACHE.put(uri, new SoftReference<Bitmap>(bitmap));
+			} else {
+				bitmap = CACHE.get(uri).get();
+				Log.i(TAG, "uri:" + uri + " 缓存存在，直接使用");
+			}
+
 		} else {
-			bitmap = CACHE.get(uri).get();
-			Log.i(TAG, "uri:" + uri + " 缓存存在，直接使用流");
+			bitmap = createBitmap(uri, context);
 		}
 
 		return bitmap;
+	}
+
+	/**
+	 * 释放图片
+	 * 
+	 * @param uri
+	 */
+	public static void release(String uri) {
+		if (CACHE.get(uri) != null && CACHE.get(uri).get() != null) {
+			CACHE.get(uri).get().recycle();
+		}
 	}
 
 	/**
@@ -69,16 +87,18 @@ public class BitmapParseUtil {
 	 */
 	private static Bitmap createBitmap(String uri, Context context) {
 		Bitmap bitmap = null;
+		// 图片配置
+		BitmapFactory.Options opt = new BitmapFactory.Options();
+		opt.inPreferredConfig = Bitmap.Config.RGB_565;
+		opt.inPurgeable = true;
+		opt.inInputShareable = true;
 		try {
-			Log.e("wwwwwwww", "执行setBitmap流0.3 createBitmap");
-
-			
 			if (uri.startsWith(ASSETS_PREFIX)) {
 				uri = uri.substring(ASSETS_PREFIX.length(), uri.length());
-				bitmap = BitmapFactory.decodeStream(context.getAssets().open(uri));
+				bitmap = BitmapFactory.decodeStream(context.getAssets().open(uri), null, opt);
 			} else if (uri.startsWith(FILE_PREFIX)) {
 				uri = uri.substring(FILE_PREFIX.length(), uri.length());
-				bitmap = BitmapFactory.decodeFile(uri);
+				bitmap = BitmapFactory.decodeStream(new FileInputStream(uri), null, opt);
 			} else if (uri.startsWith(FILE_HTTP) || uri.startsWith(FILE_HTTPS)) {
 				// 待实现
 			} else {
@@ -88,10 +108,6 @@ public class BitmapParseUtil {
 			Log.e(TAG, "parse error, uri:" + uri);
 			e.printStackTrace();
 		}
-		Log.e("wwwwwwww", "执行setBitmap流0.3 createBitmap" + bitmap.getHeight()+"--------" + bitmap.getWidth() );
-
-//		float w = bitmap.getHeight();
-//		float h = bitmap.getWidth();
 
 		return bitmap;
 	}

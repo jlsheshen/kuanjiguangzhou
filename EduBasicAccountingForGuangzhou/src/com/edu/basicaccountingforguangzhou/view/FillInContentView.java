@@ -121,7 +121,7 @@ public class FillInContentView extends RelativeLayout implements OnClickListener
 	private RelativeLayout rlTitle;
 	private boolean threadFlag;
 	private long recordMill;
-
+// 用户答案,正确答案
 	private Button btnShowUser, btnShowRight;
 	private LinearLayout rlSwitchHolder;
 

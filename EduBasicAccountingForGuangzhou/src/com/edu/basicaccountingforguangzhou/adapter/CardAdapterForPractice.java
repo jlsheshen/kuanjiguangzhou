@@ -9,6 +9,7 @@ import com.edu.basicaccountingforguangzhou.data.SubjectBasicData;
 import com.edu.basicaccountingforguangzhou.data.SubjectBillData;
 import com.edu.basicaccountingforguangzhou.data.SubjectEntryData;
 import com.edu.basicaccountingforguangzhou.data.TestData;
+import com.edu.basicaccountingforguangzhou.subject.data.TestGroupBillData;
 import com.edu.basicaccountingforguangzhou.view.BaseScrollView;
 import com.edu.basicaccountingforguangzhou.view.IOnClickListener;
 
@@ -64,18 +65,26 @@ public class CardAdapterForPractice extends BaseAdapters {
 		
 		btnCard.setBackgroundResource(getSrc(data.get(position)));
 		TestData testData = data.get(position);
-		BaseSubjectData baseSubjectData ;
+		BaseSubjectData baseSubjectData = null ;
+//		Log.e("www", "testData" + testData.getSubjectId() + "---" + testData.getSubjectType() );
 		if (testData.getSubjectType() == Constant.SUBJECT_TYPE_BILL) {
-			
-			baseSubjectData	=testData.getBillData().getSubjectData();
-			Log.e(TAG, "第" + "个data的getSubjectId是" +testData.getSubjectId());
-			Log.e(TAG, "第"  + "个data的getIndexName是" +baseSubjectData.getIndexName());
+//			Log.e(TAG, "获取billData" + testData.toString());
+	//		Log.e("TestBillData", "获取billData" + testData.getBillData() + "-------" +testData.getSubjectData()+"++" +  testData.getSubjectId());
 
+			
+			baseSubjectData	=testData.getBillData() == null?testData.getSubjectData():testData.getBillData().getSubjectData();
+//			Log.e(TAG, "第" + "个data的getSubjectId是" +testData.getSubjectId());
+//			Log.e(TAG, "第"  + "个data的getIndexName是" +baseSubjectData.getIndexName());
+
+		}else if (testData.getSubjectType() == Constant.SUBJECT_GROUP_BILL) {
+			baseSubjectData = new BaseSubjectData();
+			baseSubjectData.setIndexName(testData.getTestGroupBillData().getIndexName());
+			 baseSubjectData.setSubjectIndex(testData.getTestGroupBillData().getIndexNum());
 		}else{
 			
 			 baseSubjectData =testData.getData();
-			 Log.e(TAG, "第" + "个data的getSubjectId是" +testData.getSubjectId());
-				Log.e(TAG, "第"  + "个data的getIndexName是" +baseSubjectData.getIndexName());
+//			 Log.e(TAG, "第" + "个data的getSubjectId是" +testData.getSubjectId());
+//				Log.e(TAG, "第"  + "个data的getIndexName是" +baseSubjectData.getIndexName());
 
 		}
 		String indexName = baseSubjectData.getIndexName();
@@ -96,8 +105,10 @@ public class CardAdapterForPractice extends BaseAdapters {
 					iOnClickListener.ionClick(((SubjectBasicData) data.get(position).getData()).getSubjectIndex() - 1);
 				} else if (data.get(position).getSubjectType() == Constant.SUBJECT_TYPE_ENTRY) {
 					iOnClickListener.ionClick(((SubjectEntryData) data.get(position).getData()).getSubjectIndex() - 1);
-				} else {
+				} else if (data.get(position).getSubjectType() == Constant.SUBJECT_TYPE_BILL) {
 					iOnClickListener.ionClick(((SubjectBillData) data.get(position).getBillData().getSubjectData()).getSubjectIndex() - 1);
+				}else {
+					iOnClickListener.ionClick(data.get(position).getTestGroupBillData().getIndexNum() - 1);
 				}
 			}
 		});

@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.edu.basicaccountingforguangzhou.data.BaseSubjectData;
 import com.edu.basicaccountingforguangzhou.data.SubjectBillData;
 import com.edu.basicaccountingforguangzhou.data.TestData;
@@ -35,16 +38,20 @@ private static final long serialVersionUID = -7866847549496754459L;
 	/**
 	 * 加载模板，把题目数据加载到模板里
 	 * 
+	 * @param context
 	 * @return 加载结果信息，成功为success
 	 */
-	public String loadTemplate() {
+	public String loadTemplate(Context context) {
+		Log.e("TestBillData", "进入加载模板");
 		if (subjectData == null) {
-			return id + ",subjectId:" + subjectId + ",题目数据为空";
+			Log.e("TestBillData", "题目数据为空");
 
+			return id + ",subjectId:" + subjectId + ",题目数据为空";
 		}
 		if (template == null) {
-			return id + ",subjectId:" + subjectId + ",模板数据为空";
+			Log.e("TestBillData", "模板数据为空");
 
+			return id + ",subjectId:" + subjectId + ",模板数据为空";
 		}
 		// 获取题目里的空，模板里的空，答案记录里的空 然后进行初始化操作
 		String[] blanks = subjectData.getAnswer().split(SubjectConstant.SEPARATOR_ITEM);
@@ -61,27 +68,33 @@ private static final long serialVersionUID = -7866847549496754459L;
 		if (blanks.length != blankDatas.size()) {
 			return id + ",subjectId:" + subjectId + ",题目数据与模板不匹配";
 		}
-
 		// 初始化正确答案和用户答案
+		int uIndex = 0;//用户答案索引,用户答案的size等于正确答案的size-不需要用户填写空的size
 		for (int i = 0; i < blanks.length; i++) {
 			if (blanks[i].startsWith(SubjectConstant.FLAG_PREFIX_DISABLED)) {// 不需要用户填写，直接显示答案
 				String answer = blanks[i].substring(SubjectConstant.FLAG_PREFIX_DISABLED.length(), blanks[i].length());
 				blankDatas.get(i).setEditable(false);
+				Log.e("TestBillData", "模板数据为空");
 				blankDatas.get(i).setAnswer(answer);
+				
 			} else {
 				blankDatas.get(i).setEditable(true);
-				//正确答案初始化
+				// 正确答案初始化
 				if (blanks[i].equals(SubjectConstant.FLAG_NULL_STRING)) {// 空内容为null代表空字符串
 					blankDatas.get(i).setAnswer("");
 				} else {
 					blankDatas.get(i).setAnswer(blanks[i]);
 				}
-				//用户答案初始化
-				if (uBlankses != null && uBlankses.length == blankDatas.size()) {
-					if (uBlankses[i].equals(SubjectConstant.FLAG_NULL_STRING)) {// 空内容为null代表空字符串
+				// 用户答案初始化
+				if (uAnswer != null && !uAnswer.equals("")) {
+					if(uIndex<uBlankses.length){
+					if (uBlankses[uIndex].equals(SubjectConstant.FLAG_NULL_STRING)) {// 空内容为null代表空字符串
 						blankDatas.get(i).setuAnswer("");
 					} else {
-						blankDatas.get(i).setuAnswer(uBlankses[i]);
+						blankDatas.get(i).setuAnswer(uBlankses[uIndex]);
+					}
+					
+					uIndex++;
 					}
 				}
 			}
@@ -106,10 +119,9 @@ private static final long serialVersionUID = -7866847549496754459L;
 		this.uSigns = uSigns;
 	}
 
-
+	@Override
 	public SubjectBillData getSubjectData() {
 		return subjectData;
-
 	}
 
 	@Override
@@ -121,7 +133,5 @@ private static final long serialVersionUID = -7866847549496754459L;
 	public String toString() {
 		return String.format("subjectData:%s,template:%s,uBlanks:%s,score:%s", subjectData, template, uAnswer, uScore);
 	}
-
-
 
 }

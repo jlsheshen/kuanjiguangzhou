@@ -1,12 +1,14 @@
 package com.edu.basicaccountingforguangzhou.subject.bill.element.info;
 
+import java.io.Serializable;
+
 /**
  * 单据中各种元素数据封装基类,目前元素包括：底图，空，印章
  * 
  * @author lucher
  * 
  */
-public abstract class BaseElementInfo {
+public abstract class BaseElementInfo implements Serializable {
 	// 空对应的id
 	private int id;
 	// x坐标
@@ -23,6 +25,8 @@ public abstract class BaseElementInfo {
 	private int type;
 	//分数
 	private float score;
+	//备注
+	private String remark;
 
 	public BaseElementInfo() {
 
@@ -104,6 +108,14 @@ public abstract class BaseElementInfo {
 
 	public void setScore(float score) {
 		this.score = score;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	@Override

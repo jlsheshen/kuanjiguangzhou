@@ -2,6 +2,7 @@ package com.edu.basicaccountingforguangzhou.subject.bill.element.info;
 
 import com.edu.basicaccountingforguangzhou.subject.bill.element.ElementType;
 
+
 /**
  * 闪电符数据
  * 

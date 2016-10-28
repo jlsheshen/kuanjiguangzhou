@@ -8,6 +8,7 @@ import com.edu.library.common.PreferenceHelper;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.RelativeLayout;
 
 /**
@@ -84,15 +85,23 @@ public abstract class BaseScrollView extends RelativeLayout {
 	 * 更改数据库表TB_TEST中单多判答题状态
 	 */
 	private void updateState(String answer) {
+		//Log.e("得分专用Log", "两个answer" +answer + "-------" + mData.getAnswer() );
 
 		if (answer.equals(mData.getAnswer())) {
+		//	Log.e("得分专用Log", "正确");
+
+			
 			// 1是正确
 			mTestData.setState(1);
 			mData.setRight(true);
 			mData.setuScore(mData.getScore());
 			TestDataModel.getInstance(getContext()).updateStateAndErrorCount(mTestData.getId(), 1, mTestData.getErrorCount());
+			//Log.e("得分专用Log", "正确得分" + mData.getScore());
+
 			SubjectModel.getInstance(getContext()).cleanUserAnswerAndUscore(mData.getId(), answer, (int) mData.getScore(), true);
 		} else {
+			//Log.e("得分专用Log", "错误");
+
 			// 2是错误
 			mTestData.setState(2);
 			mData.setRight(false);

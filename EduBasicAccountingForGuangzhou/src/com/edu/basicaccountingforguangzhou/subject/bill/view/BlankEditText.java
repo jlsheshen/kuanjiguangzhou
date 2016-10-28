@@ -1,21 +1,7 @@
 package com.edu.basicaccountingforguangzhou.subject.bill.view;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import android.content.Context;
-import android.text.InputFilter;
-import android.text.InputFilter.LengthFilter;
-import android.text.InputType;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 
 import com.edu.basicaccountingforguangzhou.R;
 import com.edu.basicaccountingforguangzhou.subject.SubjectConstant;
@@ -27,6 +13,23 @@ import com.edu.basicaccountingforguangzhou.subject.bill.element.info.BlankInfo;
 import com.edu.basicaccountingforguangzhou.subject.bill.scale.IScaleable;
 import com.edu.basicaccountingforguangzhou.subject.bill.scale.ScaleUtil;
 
+import android.content.Context;
+import android.graphics.Rect;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputFilter.LengthFilter;
+import android.text.InputType;
+import android.text.Spanned;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+
+
+
 /**
  * 单据里对应空的封装,支持缩放
  * 
@@ -34,6 +37,15 @@ import com.edu.basicaccountingforguangzhou.subject.bill.scale.ScaleUtil;
  * 
  */
 public class BlankEditText extends EditText implements IScaleable {
+
+	// 背景色-正常-灰色
+	private static int BG_COLOR_NORMAL = 0x55000000;
+	// 背景色-获取焦点-草黄色
+	private static int BG_COLOR_FOCUSED = 0x9997984A;
+	// 背景色-正确-蓝色
+	private static int BG_COLOR_CORRECT = 0x990066FF;
+	// 背景色-错误-红色
+	private static int BG_COLOR_ERROR = 0x88ff0000;
 
 	// 默认字体大小
 	private static int DEFAULT_TEXT_SIZE = 16;
@@ -50,6 +62,9 @@ public class BlankEditText extends EditText implements IScaleable {
 	// 答题状态
 	private int mState;
 
+	// 换行符
+	private String newLine = "\n";
+
 	public BlankEditText(Context context, int testMode, int state) {
 		super(context);
 		mTestMode = testMode;
@@ -61,37 +76,47 @@ public class BlankEditText extends EditText implements IScaleable {
 	 * 初始化
 	 */
 	private void init() {
-		setPadding(1, 0, 1, 0);
+		setPadding(1, 1, 1, 1);
 		setGravity(Gravity.CENTER_VERTICAL);
 		setSingleLine();
-		setBackgroundColor(0x55000000);
 		setTextColor(R.drawable.blank_edit_text_color_black);
 		setImeOptions(EditorInfo.IME_ACTION_NEXT);
+		setCursorVisible(false);
+		setFocusableInTouchMode(true);
+
 	}
 
 	/**
 	 * 根据空的不同类型初始化空的属性
 	 */
 	private void initBlank() {
+
 		if (init)
-			return;
+		return;
 		setInputType();
 		// 判断是否需要用户填写
 		if (mData.isEditable()) {
-			setEnabled(true);
+			setFocusable(true);
+			setBackgroundColor(BG_COLOR_NORMAL);
 		} else {
-			setEnabled(false);
-			setText(mData.getAnswer());
+			setFocusable(false);
+			setTextChecked(mData.getAnswer());
+			setBackground(null);
 		}
-		// 状态初始化
-		if (mState == SubjectState.STATE_FINISHED) {
-			if (mTestMode == TestMode.MODE_PRACTICE || mTestMode == TestMode.MODE_SHOW_DETAILS) {
+
+		if (mTestMode == TestMode.MODE_SHOW_DETAILS) {// 查看详情
+			judgeAnswer();
+			showAnswer(true);
+			refreshState();
+		} else if (mTestMode == TestMode.MODE_PRACTICE) {// 练习
+			// 状态初始化
+			if (mState == SubjectState.STATE_FINISHED) {
 				judgeAnswer();
 				showAnswer(true);
 				refreshState();
-			} else if (mTestMode == TestMode.MODE_EXAM) {
-				showAnswer(true);
 			}
+		} else if (mTestMode == TestMode.MODE_EXAM) {// 测试
+			showAnswer(true);
 		}
 
 		init = !init;
@@ -101,24 +126,47 @@ public class BlankEditText extends EditText implements IScaleable {
 	 * 设置输入方式
 	 */
 	private void setInputType() {
+		if (!mData.isEditable()) {
+			return;
+		}
 		InputFilter[] filters;
 		switch (mData.getType()) {
-		case ElementType.TYPE_DATE_LOWER:
-			setInputType(InputType.TYPE_CLASS_NUMBER);
+		case ElementType.TYPE_DATE_UPPER:
+		case ElementType.TYPE_NORMAL_CENTER:
+		case ElementType.TYPE_AMOUNT_LOWER:
+			setGravity(Gravity.CENTER);
 
 			break;
-		case ElementType.TYPE_AMOUNT_LOWER:
-			setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+		case ElementType.TYPE_DATE_LOWER:
+			setGravity(Gravity.CENTER);
+			setInputType(InputType.TYPE_CLASS_NUMBER);
+			// 对于年限制长度4位，月/日限制长度2位
+			if (mData.getAnswer() != null) {
+				int length = mData.getAnswer().length();
+				if (length != 4) {
+					length = 2;
+				}
+				filters = new InputFilter[] { new LengthFilter(length) };
+				setFilters(filters);
+			}
+
+			break;
+		case ElementType.TYPE_AMOUNT_LOWER_COMMA:
+			setGravity(Gravity.CENTER);
+			addTextChangedListener(new CashierWatcher());
+			filters = new InputFilter[] { new LengthFilter(18) };
+			setFilters(filters);
 
 			break;
 		case ElementType.TYPE_AMOUNT_LOWER_SEP:
-			filters = new InputFilter[] { new LengthFilter(1) };
-			setFilters(filters); // 最大输入1个字符。
+			setGravity(Gravity.CENTER);
 
 			break;
 
 		case ElementType.TYPE_VERTICAL:
 			setSingleLine(false);
+			setGravity(Gravity.CENTER_HORIZONTAL);
+			setFilters(new InputFilter[] { new VerticalInputFilter() });
 
 			break;
 
@@ -130,9 +178,40 @@ public class BlankEditText extends EditText implements IScaleable {
 	@Override
 	public void setTextSize(float size) {
 		super.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);// 为了方便字体大小的自适应，采用px方式设置字体大小
-		setText(getText());// 如果不调用，设置字体大小后，内容可能不会居中
+		// setText(getText());// 如果不调用，设置字体大小后，内容可能不会居中
 		int selection = getText().toString().length();
 		setSelection(selection);// 设置把光标定位到最后
+	}
+
+	/**
+	 * 重新设置文本方法，主要添加对竖直控件的判断
+	 * 
+	 * @param text
+	 */
+	private void setTextChecked(String text) {
+		if (text == null) {
+			super.setText(text);
+		} else if (mData.getType() == ElementType.TYPE_VERTICAL) {// 竖直空
+			StringBuilder builder = new StringBuilder();
+			char[] chars = text.toCharArray();
+			for (int i = 0; i < chars.length; i++) {
+				if (i == 0) {
+					builder.append(chars[i]);
+				} else {
+					builder.append(newLine + chars[i]);
+				}
+			}
+			super.setText(builder.toString());
+		} else if (mData.getType() == ElementType.TYPE_MULTI_ANSWER) {// 多答案空
+			if (mData.isRight()) {
+				super.setText(mData.getuAnswer());
+			} else {
+				String[] answers = text.split(SubjectConstant.SEPARATOR_MULTI_ANSWER);
+				super.setText(answers[0]);
+			}
+		} else {
+			super.setText(text);
+		}
 	}
 
 	/**
@@ -183,49 +262,78 @@ public class BlankEditText extends EditText implements IScaleable {
 		// 宽高缩放-如果不缩放，可能引起内容显示不全
 		setWidth(scaledWidth);
 		setHeight(scaledHeight);
-		Log.d("lucher", "scaledHeight:" + scaledHeight);
+		// Log.d("lucher", "scaledHeight:" + scaledHeight);
 	}
 
 	/**
 	 * 提交
 	 */
 	public void submit() {
+		if (!mData.isEditable()) {
+			return;
+		}
+		mState = SubjectState.STATE_FINISHED;
 		saveAnswer();
 		judgeAnswer();
 		showAnswer(true);
-		refreshState();
+	//	refreshState();
 	}
 
 	/**
 	 * 保存用户答案
 	 */
 	public void saveAnswer() {
-		mData.setuAnswer(getText().toString().trim());
+		if (mData.getType() == ElementType.TYPE_VERTICAL) {// 去掉换行符
+			mData.setuAnswer(getText().toString().replace(newLine, "").trim());
+		} else {
+			mData.setuAnswer(getText().toString().trim());
+		}
+	}
+	/**
+	 * 重置
+	 */
+	public void reset() {
+		if (!mData.isEditable()) {
+			return;
+		}
+		mState = SubjectState.STATE_INIT;
+		mData.setuAnswer(null);
+		mData.setRight(false);
+		showAnswer(true);
+		setFocusableInTouchMode(true);
 	}
 
 	/**
 	 * 判断答案正确与否
 	 */
 	public void judgeAnswer() {
+		Log.e("得分专用Log", "用户答案" + mData.getuAnswer() + "正确答案" + mData.getAnswer().trim());
+		if (!mData.isEditable()) {
+			return;
+		}
 		if (mData.getuAnswer() != null) {
 			switch (mData.getType()) {
 			case ElementType.TYPE_KEY_WORD:// 关键字匹配
 				if (mData.getuAnswer().trim().contains(mData.getAnswer().trim())) {
 					mData.setRight(true);
+				} else {
+					mData.setRight(false);
 				}
 				break;
 
 			case ElementType.TYPE_MULTI_ANSWER:// 多个答案匹配
-				String[] answers = mData.getAnswer().trim().split(SubjectConstant.SEPARATOR_MULTI_ANSWER);
-				if (Arrays.asList(answers).contains(mData.getuAnswer().trim())) {
+				if (mData.getAnswer().trim().equals(mData.getuAnswer().trim())) {
 					mData.setRight(true);
+				} else {
+					mData.setRight(false);
 				}
-
 				break;
 
 			default:// 答案对比匹配
 				if (mData.getAnswer().trim().equals(mData.getuAnswer().trim())) {
 					mData.setRight(true);
+				} else {
+					mData.setRight(false);
 				}
 				break;
 			}
@@ -239,12 +347,15 @@ public class BlankEditText extends EditText implements IScaleable {
 	 *            true-显示用户答案，false-显示正确答案
 	 */
 	public void showAnswer(boolean user) {
+		if (!mData.isEditable()) {
+			return;
+		}
 		if (user) {
-			setText(mData.getuAnswer());
+			setTextChecked(mData.getuAnswer());
 			refreshState();
 		} else {
-			setText(mData.getAnswer());
-			setBackgroundColor(0x55000000);
+			setTextChecked(mData.getAnswer());
+			setBackgroundColor(BG_COLOR_NORMAL);
 		}
 	}
 
@@ -252,120 +363,163 @@ public class BlankEditText extends EditText implements IScaleable {
 	 * 刷新该空的作答状态
 	 */
 	public void refreshState() {
+		if (!mData.isEditable()) {
+			return;
+		}
 		if (mTestMode == TestMode.MODE_PRACTICE) {// 练习模式
-			setEnabled(false);
-			if (mData.isRight()) {
-				setBackgroundColor(0x990066FF);
+			if (mState == SubjectState.STATE_INIT) {
+				setFocusable(true);
+				setBackgroundColor(BG_COLOR_NORMAL);
 			} else {
-				setBackgroundColor(0x88ff0000);
+				setFocusable(false);
+				if (mData.isRight()) {
+					setBackgroundColor(BG_COLOR_CORRECT);
+				} else {
+					setBackgroundColor(BG_COLOR_ERROR);
+				}
 			}
+
 		} else if (mTestMode == TestMode.MODE_SHOW_DETAILS) {// 显示详情模式
-			setEnabled(false);
+			setFocusable(false);
 			if (mData.isRight()) {
-				setBackgroundColor(0x990066FF);
+				setBackgroundColor(BG_COLOR_CORRECT);
 			} else {
-				setBackgroundColor(0x88ff0000);
+				setBackgroundColor(BG_COLOR_ERROR);
 			}
 		} else if (mTestMode == TestMode.MODE_EXAM) {// 考试模式
+			setBackgroundColor(BG_COLOR_NORMAL);
 		}
 	}
 
-	@Override
-	public boolean onKeyPreIme(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			clearFocus();// 解决readme中所说的输入法软件盘可能会遮挡的问题
-		}
-		return super.onKeyPreIme(keyCode, event);
-	}
+	// @Override
+	// public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+	// if (keyCode == KeyEvent.KEYCODE_BACK) {
+	// clearFocus();// 解决readme中所说的输入法软件盘可能会遮挡的问题
+	// }
+	// return super.onKeyPreIme(keyCode, event);
+	// }
 
 	@Override
 	public String toString() {
 		return "BlankEditText：" + mData;
 	}
 
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		return false;
+	}
+
+	@Override
+	protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
+		super.onFocusChanged(focused, direction, previouslyFocusedRect);
+		if (focused) {
+			// 设置获取焦点的背景色
+			setBackgroundColor(BG_COLOR_FOCUSED);
+		} else {
+			setBackgroundColor(BG_COLOR_NORMAL);
+		}
+	}
+
 	/**
-	 * 金额格式filter
+	 * 竖直空filter
 	 * 
 	 * @author lucher
 	 * 
 	 */
-	public class CashierInputFilter implements InputFilter {
-		Pattern mPattern;
+	public class VerticalInputFilter implements InputFilter {
 
-		// 输入的最大金额
-		private static final int MAX_VALUE = Integer.MAX_VALUE;
-		// 小数点后的位数
-		private static final int POINTER_LENGTH = 2;
-
-		private static final String POINTER = ".";
-
-		private static final String ZERO = "0";
-
-		public CashierInputFilter() {
-			mPattern = Pattern.compile("([0-9]|\\.)*");
-		}
-
-		/**
-		 * @param source
-		 *            新输入的字符串
-		 * @param start
-		 *            新输入的字符串起始下标，一般为0
-		 * @param end
-		 *            新输入的字符串终点下标，一般为source长度-1
-		 * @param dest
-		 *            输入之前文本框内容
-		 * @param dstart
-		 *            原内容起始坐标，一般为0
-		 * @param dend
-		 *            原内容终点坐标，一般为dest长度-1
-		 * @return 输入内容
-		 */
-		@Override
 		public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
 			String sourceText = source.toString();
 			String destText = dest.toString();
+			if (source.equals("")) {// 删除
+				return "";
+			} else {
+				if (destText.length() > 0) {
+					return newLine + sourceText;
+				} else {
+					return source;
+				}
+			}
+		}
 
-			// 验证删除等按键
-			if (TextUtils.isEmpty(sourceText)) {
+	}
+
+	/**
+	 * 金额控件监听类，用于加入逗号
+	 * 
+	 * @author lucher
+	 * 
+	 */
+	public class CashierWatcher implements TextWatcher {
+
+		// 人民币符号
+		private String rmbSymbol = "￥";
+		// 金额格式化
+		private DecimalFormat dFormat = new DecimalFormat("###,###,###,###,###.##########");
+		// 当前字符
+		private String current;
+
+		@Override
+		public void afterTextChanged(Editable s) {
+			if (current != null && !current.equals(getText().toString())) {
+				setText(current);
+				setSelection(getText().toString().length());
+			}
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			current = formatStr(s.toString().trim().replace(",", ""));
+		}
+
+		/**
+		 * 格式化金额
+		 * 
+		 * @param str
+		 * @return
+		 */
+		private String formatStr(String str) {
+			String result = null;
+			boolean containsRmb = false;
+			if (str.equals("")) {
 				return "";
 			}
-
-			Matcher matcher = mPattern.matcher(source);
-			// 已经输入小数点的情况下，只能输入数字
-			if (destText.contains(POINTER)) {
-				if (!matcher.matches()) {
-					return "";
-				} else {
-					if (POINTER.equals(source)) { // 只能输入一个小数点
-						return "";
-					}
-				}
-
-				// 验证小数点精度，保证小数点后只能输入两位
-				int index = destText.indexOf(POINTER);
-				int length = dend - index;
-
-				if (length > POINTER_LENGTH) {
-					return dest.subSequence(dstart, dend);
-				}
-			} else {
-				// 没有输入小数点的情况下，只能输入小数点和数字，但首位不能输入小数点和0
-				if (!matcher.matches()) {
-					return "";
-				} else {
-					if ((POINTER.equals(source) || ZERO.equals(source)) && TextUtils.isEmpty(destText)) {
-						return "";
-					}
-				}
+			if (str.equals(rmbSymbol)) {
+				return rmbSymbol;
+			}
+			if (str.startsWith(rmbSymbol)) {
+				containsRmb = true;
+				str = str.substring(1, str.length());
 			}
 
-			// 验证输入金额的大小
-			double sumText = Double.parseDouble(destText + sourceText);
-			if (sumText > MAX_VALUE) {
-				return dest.subSequence(dstart, dend);
+			try {
+				if (str.contains(".") && str.lastIndexOf(".") == str.length() - 4) {// 有两位小数情况
+					result = current;
+				} else if (str.lastIndexOf(".") == str.length() - 1) {// 小数点结尾
+					result = dFormat.format(Double.parseDouble(str)) + ".";
+				} else if (str.contains(".") && str.lastIndexOf("0") == str.length() - 1) {// 有小数点，且以0结尾
+					result = formatStr(str.substring(0, str.length() - 1)) + "0";
+				} else {
+					result = dFormat.format(Double.parseDouble(str));
+				}
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				result = current;
 			}
 
-			return dest.subSequence(dstart, dend) + sourceText;
+			// 以人民币开头情况
+			if (containsRmb && !result.startsWith(rmbSymbol)) {
+				result = rmbSymbol + result;
+			}
+
+			return result;
+	
+
 		}
 	}
+
 }

@@ -2,11 +2,12 @@ package com.edu.basicaccountingforguangzhou.subject.view;
 
 import com.edu.basicaccountingforguangzhou.data.TestData;
 import com.edu.basicaccountingforguangzhou.subject.ISubject;
+import com.edu.basicaccountingforguangzhou.subject.SubjectListener;
 
 public class JudgeView implements ISubject{
 
 	@Override
-	public void applyData(TestData data) {
+	public void applyData(TestData data,int testMode) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -31,6 +32,12 @@ public class JudgeView implements ISubject{
 
 	@Override
 	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSubjectListener(SubjectListener listener) {
 		// TODO Auto-generated method stub
 		
 	}
